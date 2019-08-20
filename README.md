@@ -3,9 +3,9 @@
 ## Development
 
 ```
-# Install developmen dependencies
+# Install development dependencies
 npm install
 
-# Install peer dependencies
-npm install gatsby axios react --no-save
+# Commit message helper
+npm run commit
 ```

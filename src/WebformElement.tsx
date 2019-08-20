@@ -1,5 +1,6 @@
 import React from 'react'
 import { Html5Entities } from 'html-entities'
+import { classNames } from './utils'
 
 import Input from './Input'
 import Checkbox from './Checkbox'
@@ -35,7 +36,7 @@ interface WebformTel extends BaseWebformInput {
 }
 
 interface BaseWebformOptions {
-	_options_display?: 'side_by_side'
+	_options_display?: string
 	_options: {
 		[key: string]: string
 	}
@@ -138,23 +139,10 @@ export const WebformOptionsElement: React.FC<{ element: WebformOptions; error?: 
 	const type = getType(element) as 'checkbox' | 'radio'
 
 	switch (element._type) {
-		case 'radio':
-		case 'checkbox':
-			return (
-				<Checkbox
-					name={element.name}
-					type={type}
-					label={element._title}
-					disabled={element._disabled}
-					readOnly={element._readonly}
-					required={element._required}
-					defaultChecked={!!element._default_value}
-				/>
-			)
 		case 'radios':
 		case 'checkboxes':
 			return (
-				<div className={element._options_display}>
+				<div className={classNames('option-group', element._options_display)}>
 					{Object.entries(element._options).map(([value, label]) => (
 						<Checkbox
 							key={value}
@@ -170,7 +158,19 @@ export const WebformOptionsElement: React.FC<{ element: WebformOptions; error?: 
 					))}
 				</div>
 			)
+		case 'radio':
+		case 'checkbox':
 		default:
-			throw new Error('Element is not webform options element')
+			return (
+				<Checkbox
+					name={element.name}
+					type={type}
+					label={element._title}
+					disabled={element._disabled}
+					readOnly={element._readonly}
+					required={element._required}
+					defaultChecked={!!element._default_value}
+				/>
+			)
 	}
 }

@@ -5,17 +5,17 @@ node_js:
 
 cache: npm
 
-script:
-  - npm ci
-  - npm run test
-
 jobs:
   include:
+    - stage: test
+      script:
+        - npm ci
+        - npm run test
     # Define the release stage that runs semantic-release
     - stage: release
-      script: npm run build
+      script:
+        - npm run build
       deploy:
         provider: script
         skip_cleanup: true
-        script:
-          - npx semantic-release
+        script: npx semantic-release

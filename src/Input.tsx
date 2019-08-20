@@ -1,7 +1,6 @@
 import React from 'react'
 
 import FormGroup from './FormGroup'
-import { classNames } from './utils'
 
 type InputProps = React.HTMLProps<HTMLInputElement>
 
@@ -16,7 +15,7 @@ interface Props extends InputProps {
 const Input: React.FunctionComponent<Props> = ({ children, className, error, help, label, ...props }) => (
 	<FormGroup className={className}>
 		<label>
-			<span className={classNames('label', props.required && 'required')}>{label}</span>
+			<span className="form-input-label">{label}</span>
 
 			<input className="form-input" {...props} />
 

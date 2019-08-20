@@ -1,0 +1,209 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputGroup renders correctly 1`] = `
+<div
+  className="form-group input-group custom-class"
+>
+  <label>
+    <span
+      className="form-input-label"
+    >
+      Test Input Group
+    </span>
+    <input
+      className="form-input"
+      type="email"
+    />
+    <div
+      className="input-add-on"
+    >
+      Add-on
+    </div>
+  </label>
+</div>
+`;
+
+exports[`Webform renders correctly 1`] = `
+<form
+  className="form custom-class"
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <div
+    className="form-group"
+  >
+    <label>
+      <span
+        className="form-input-label"
+      >
+        Your Name
+      </span>
+      <input
+        className="form-input"
+        name="name"
+        required={true}
+        type="text"
+      />
+      <span
+        className="form-input-help"
+      >
+        What is your name?
+      </span>
+    </label>
+  </div>
+  <div
+    className="form-group"
+  >
+    <label>
+      <span
+        className="form-input-label"
+      >
+        Your Email
+      </span>
+      <input
+        className="form-input"
+        name="email"
+        required={true}
+        type="email"
+      />
+    </label>
+  </div>
+  <div
+    className="form-group"
+  >
+    <label>
+      <span
+        className="form-input-label"
+      >
+        Subject
+      </span>
+      <input
+        className="form-input"
+        name="subject"
+        required={true}
+        type="text"
+      />
+    </label>
+  </div>
+  <div
+    className="form-group"
+  >
+    <label>
+      <span
+        className="form-input-label"
+      >
+        Message
+      </span>
+      <input
+        as="textarea"
+        className="form-input"
+        name="message"
+        required={true}
+      />
+    </label>
+  </div>
+  <div
+    className="form-group"
+  >
+    <input
+      className="form-input form-input-checkbox"
+      defaultChecked={false}
+      id="i"
+      name="consent"
+      required={true}
+      type="checkbox"
+    />
+    <label
+      htmlFor="i"
+    >
+      Add me to email list
+    </label>
+  </div>
+  <div
+    className="option-group"
+  >
+    <div
+      className="form-group"
+    >
+      <input
+        className="form-input form-input-radio"
+        defaultChecked={false}
+        id="i"
+        name="color"
+        type="radio"
+        value="blue"
+      />
+      <label
+        htmlFor="i"
+      >
+        Blue
+      </label>
+    </div>
+    <div
+      className="form-group"
+    >
+      <input
+        className="form-input form-input-radio"
+        defaultChecked={false}
+        id="i"
+        name="color"
+        type="radio"
+        value="red"
+      />
+      <label
+        htmlFor="i"
+      >
+        Red
+      </label>
+    </div>
+    <div
+      className="form-group"
+    >
+      <input
+        className="form-input form-input-radio"
+        defaultChecked={false}
+        id="i"
+        name="color"
+        type="radio"
+        value="pink"
+      />
+      <label
+        htmlFor="i"
+      >
+        Pink
+      </label>
+    </div>
+  </div>
+  <div
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<p>Custom markup</p>",
+      }
+    }
+  />
+  <div
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": undefined,
+      }
+    }
+  />
+  <code>
+    <pre>
+      {
+  "nodejs": {
+    "name": "unknown",
+    "_type": "unknown",
+    "_title": "Unknown element"
+  }
+}
+    </pre>
+  </code>
+  <button
+    className="btn"
+    type="submit"
+  >
+    Submit
+  </button>
+</form>
+`;

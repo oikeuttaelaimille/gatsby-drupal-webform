@@ -11,14 +11,13 @@
 		// This resolution strategy attempts to mimic the Node.js module resolution mechanism at runtime.
 		"moduleResolution": "node",
 		// The preserve mode will keep the JSX as part of the output.
-		"jsx": "preserve",
+		"jsx": "react",
 		"module": "es6",
 		// Import non-ES modules as default imports.
 		"esModuleInterop": true,
 		// Target latest version of ECMAScript.
 		"target": "esnext",
 		"lib": ["dom", "es2015", "es2017"],
-		"outDir": "./dist"
 	},
 	"include": ["./src/**/*"]
 }

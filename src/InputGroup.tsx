@@ -15,8 +15,8 @@ interface Props extends InputProps {
 }
 
 const InputGroup: React.FunctionComponent<Props> = ({ children, className, ...props }) => (
-	<Input className={classNames('form-input-group', className)} {...props}>
-		<div className="group">{children}</div>
+	<Input className={classNames('input-group', className)} {...props}>
+		<div className="input-add-on">{children}</div>
 	</Input>
 )
 
