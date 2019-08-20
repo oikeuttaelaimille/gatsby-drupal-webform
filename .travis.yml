@@ -1,0 +1,21 @@
+language: node_js
+
+node_js:
+  - lts/*
+
+cache: npm
+
+script:
+  - npm ci
+  - npm run test
+
+jobs:
+  include:
+    # Define the release stage that runs semantic-release
+    - stage: release
+      script: npm run build
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script:
+          - npx semantic-release
