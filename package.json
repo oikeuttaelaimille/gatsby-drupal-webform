@@ -1,0 +1,94 @@
+{
+  "name": "gatsby-drupal-webform",
+  "version": "0.0.0-development",
+  "description": "React component for Drupal webforms",
+  "author": "Santeri Hurnanen <santeri@oikeuttaelaimille.fi>",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "commit": "git-cz"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oikeuttaelaimille/gatsby-drupal-webform.git"
+  },
+  "keywords": [
+    "gatsby",
+    "gatsby-component",
+    "react-component",
+    "drupal"
+  ],
+  "bugs": {
+    "url": "https://github.com/oikeuttaelaimille/gatsby-drupal-webform/issues"
+  },
+  "homepage": "https://github.com/oikeuttaelaimille/gatsby-drupal-webform#readme",
+  "peerDependencies": {
+    "gatsby": "^2.0.0",
+    "axios": "^0.19.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "dependencies": {
+    "html-entities": "^1.2.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^8.1.0",
+    "@semantic-release/changelog": "^3.0.4",
+    "@semantic-release/git": "^7.0.16",
+    "@types/html-entities": "^1.2.16",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.0.2",
+    "husky": "^3.0.4",
+    "lint-staged": "^9.2.3",
+    "prettier": "^1.18.2",
+    "semantic-release": "^15.13.21",
+    "tslint": "^5.18.0",
+    "tslint-config-blvd": "^1.2.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "typescript": "^3.5.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "lint-staged": {
+    "{src,test}/**/*.ts{x,}": [
+      "tslint -p tsconfig.json -c tslint.json --fix",
+      "git add"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      "@semantic-release/git"
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "tabWidth": 2,
+    "useTabs": true,
+    "printWidth": 140,
+    "singleQuote": true,
+    "trailingComma": "none"
+  }
+}
