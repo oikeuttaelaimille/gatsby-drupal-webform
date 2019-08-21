@@ -6,16 +6,16 @@ exports[`InputGroup renders correctly 1`] = `
 >
   <label>
     <span
-      className="form-input-label"
+      className="form-control-label"
     >
       Test Input Group
     </span>
     <input
-      className="form-input"
+      className="form-control"
       type="email"
     />
     <div
-      className="input-add-on"
+      className="input-group-add-on"
     >
       Add-on
     </div>
@@ -34,18 +34,18 @@ exports[`Webform renders correctly 1`] = `
   >
     <label>
       <span
-        className="form-input-label"
+        className="form-control-label"
       >
         Your Name
       </span>
       <input
-        className="form-input"
+        className="form-control"
         name="name"
         required={true}
         type="text"
       />
       <span
-        className="form-input-help"
+        className="form-text"
       >
         What is your name?
       </span>
@@ -56,12 +56,12 @@ exports[`Webform renders correctly 1`] = `
   >
     <label>
       <span
-        className="form-input-label"
+        className="form-control-label"
       >
         Your Email
       </span>
       <input
-        className="form-input"
+        className="form-control"
         name="email"
         required={true}
         type="email"
@@ -73,12 +73,12 @@ exports[`Webform renders correctly 1`] = `
   >
     <label>
       <span
-        className="form-input-label"
+        className="form-control-label"
       >
         Subject
       </span>
       <input
-        className="form-input"
+        className="form-control"
         name="subject"
         required={true}
         type="text"
@@ -90,23 +90,23 @@ exports[`Webform renders correctly 1`] = `
   >
     <label>
       <span
-        className="form-input-label"
+        className="form-control-label"
       >
         Message
       </span>
       <input
         as="textarea"
-        className="form-input"
+        className="form-control"
         name="message"
         required={true}
       />
     </label>
   </div>
   <div
-    className="form-group"
+    className="form-group form-check"
   >
     <input
-      className="form-input form-input-checkbox"
+      className="form-check-input"
       defaultChecked={false}
       id="i"
       name="consent"
@@ -114,6 +114,7 @@ exports[`Webform renders correctly 1`] = `
       type="checkbox"
     />
     <label
+      className="form-check-label"
       htmlFor="i"
     >
       Add me to email list
@@ -123,10 +124,10 @@ exports[`Webform renders correctly 1`] = `
     className="option-group"
   >
     <div
-      className="form-group"
+      className="form-group form-check"
     >
       <input
-        className="form-input form-input-radio"
+        className="form-check-input"
         defaultChecked={false}
         id="i"
         name="color"
@@ -134,16 +135,17 @@ exports[`Webform renders correctly 1`] = `
         value="blue"
       />
       <label
+        className="form-check-label"
         htmlFor="i"
       >
         Blue
       </label>
     </div>
     <div
-      className="form-group"
+      className="form-group form-check"
     >
       <input
-        className="form-input form-input-radio"
+        className="form-check-input"
         defaultChecked={false}
         id="i"
         name="color"
@@ -151,16 +153,17 @@ exports[`Webform renders correctly 1`] = `
         value="red"
       />
       <label
+        className="form-check-label"
         htmlFor="i"
       >
         Red
       </label>
     </div>
     <div
-      className="form-group"
+      className="form-group form-check"
     >
       <input
-        className="form-input form-input-radio"
+        className="form-check-input"
         defaultChecked={false}
         id="i"
         name="color"
@@ -168,6 +171,7 @@ exports[`Webform renders correctly 1`] = `
         value="pink"
       />
       <label
+        className="form-check-label"
         htmlFor="i"
       >
         Pink

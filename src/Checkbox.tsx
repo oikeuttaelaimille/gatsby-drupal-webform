@@ -26,9 +26,11 @@ const Checkbox = ({ className, label, ...props }: Props) => {
 	const [id] = React.useState(generateId())
 
 	return (
-		<FormGroup className={className}>
-			<input className={classNames('form-input', `form-input-${props.type}`)} id={id} {...props} />
-			<label htmlFor={id}>{label}</label>
+		<FormGroup className={classNames('form-check', className)}>
+			<input className="form-check-input" id={id} {...props} />
+			<label className="form-check-label" htmlFor={id}>
+				{label}
+			</label>
 		</FormGroup>
 	)
 }

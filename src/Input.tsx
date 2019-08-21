@@ -15,12 +15,12 @@ interface Props extends InputProps {
 const Input: React.FunctionComponent<Props> = ({ children, className, error, help, label, ...props }) => (
 	<FormGroup className={className}>
 		<label>
-			<span className="form-input-label">{label}</span>
+			<span className="form-control-label">{label}</span>
 
-			<input className="form-input" {...props} />
+			<input className="form-control" {...props} />
 
-			{error && <span className="form-input-error">{error}</span>}
-			{help && <span className="form-input-help">{help}</span>}
+			{error && <span className="form-text invalid-feedback">{error}</span>}
+			{help && <span className="form-text">{help}</span>}
 
 			{children}
 		</label>
