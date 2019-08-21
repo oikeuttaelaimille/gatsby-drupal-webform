@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/oikeuttaelaimille/gatsby-drupal-webform.svg?branch=master)](https://travis-ci.org/oikeuttaelaimille/gatsby-drupal-webform)
 
-React component and graphql fragments form [webforms](https://www.drupal.org/project/webform).
+React component and graphql fragments for [webforms](https://www.drupal.org/project/webform). Goal of this project is to have a react component that generates [bootstrap like](https://getbootstrap.com/docs/4.0/components/forms/) HTML from webform YAML configuration.
 
 ## Usage
 
