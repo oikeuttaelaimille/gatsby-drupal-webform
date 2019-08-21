@@ -27,7 +27,7 @@ const MyForm = ({ data: { nodeWebform: node } }) => (
 		onSuccess={() => navigate('/thank-you')}
 		entityType="node"
 		entityId={node.drupal_internal__nid}
-		endpoint={drupalEndpoint}
+		endpoint="/drupal/webform_rest/submit"
 	/>
 )
 
