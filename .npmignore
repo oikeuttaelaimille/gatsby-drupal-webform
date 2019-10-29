@@ -1,3 +1,6 @@
 src/
+web/
+scripts/
+examples/
 tsconfig.json
 tslint.json

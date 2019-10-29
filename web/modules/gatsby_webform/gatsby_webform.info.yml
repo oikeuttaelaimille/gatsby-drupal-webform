@@ -1,0 +1,11 @@
+name: 'Gatsby webform'
+description: 'Gatsby webform integration glue'
+core: 8.x
+type: module
+version: '8.x-1.0'
+
+dependencies:
+  - drupal:rest
+  - drupal:jsonapi
+  - jsonapi_extras
+  - webform

@@ -1,181 +1,218 @@
-import React from 'react'
+import React, { useState, FormEvent } from 'react'
 import axios from 'axios'
 import { graphql } from 'gatsby'
 
-import Form from './Form'
-import Textarea from './Textarea'
-import Button from './Button'
-import { WebformElement, WebformInputElement, WebformOptionsElement } from './WebformElement'
 import { formToJSON } from './utils'
+import { renderWebformElement, DEFAULT_SUBMIT_LABEL } from './webformRender'
 
+/**
+ * Webform object as returned from GraphQL query.
+ */
 export interface WebformObject {
-	name: string
+	drupal_internal__id: string
 	description: string
 	status: string
 	elements: WebformElement[]
 }
 
-interface WebformErrors {
+export type WebformOption = {
+	label: string
+	value: string
+}
+
+export interface WebformStateCondition {
+	[key: string]: boolean | string | null
+}
+
+/**
+ * Webform drupal form api states.
+ */
+export type WebformState = {
+	state: string
+	selector: string
+	condition: WebformStateCondition
+}
+
+/**
+ * Webform element attribute.
+ */
+export type WebformAttribute = {
+	name: string
+	value: string
+}
+
+/**
+ * Webform element (e.g. text field input or submit button).
+ */
+export type WebformElement = {
+	name: string
+	type: string
+	options?: WebformOption[]
+	attributes: WebformAttribute[]
+	states?: WebformState[]
+}
+
+export type WebformCustomComponentProps = {
+	element: WebformElement
+	error?: string
+}
+
+/**
+ * Custom component for webform element
+ */
+export type WebformCustomComponent = React.FC<WebformCustomComponentProps>
+
+export type WebformValidateHandler = (event: FormEvent<HTMLFormElement>) => boolean
+export type WebformSubmitHandler = (
+	data: ReturnType<typeof formToJSON>,
+	event: FormEvent<HTMLFormElement>
+) => void | boolean | Promise<void | boolean>
+
+export type WebformSuccessHandler = (response: any, event: FormEvent<HTMLFormElement>) => void
+export type WebformErrorHandler = (err: any, event: FormEvent<HTMLFormElement>) => void
+
+export class WebformError extends Error {
+	response: any
+
+	constructor(response: any) {
+		super()
+
+		this.response = response
+	}
+}
+
+/**
+ * Element errors returned by Drupal.
+ */
+type WebformErrors = {
 	[name: string]: string
 }
 
 interface Props {
-	onSubmit?: (data: {}) => void
-	onSuccess?: (target: HTMLFormElement, data: {}) => void
-	onError?: (error: any) => void
-
+	id?: string
 	className?: string
-	elements: WebformElement[]
-	name: string
+	style?: React.CSSProperties
 
-	/** Post webform to specific entity */
-	entityType?: string
+	webform: WebformObject
 
-	/** Post webform to specific entity */
-	entityId?: number
+	onValidate?: WebformValidateHandler
+	onSuccess?: WebformSuccessHandler
+	onError?: WebformErrorHandler
+
+	/**
+	 * Called right before webform data is POSTed to the api.
+	 *
+	 * If callback returns false nothing is sent to the api.
+	 */
+	onSubmit?: WebformSubmitHandler
 
 	/** Form POST endpoint */
 	endpoint: string
+
+	/** Provide custom components that handle specific webform elements. */
+	customComponents: { [name: string]: WebformCustomComponent }
 }
 
-const Webform: React.FC<Props> = ({ className, children, name: webformName, elements, ...props }) => {
-	const [errors, setErrors] = React.useState({} as WebformErrors)
+/**
+ * Drupal webform react component.
+ */
+const Webform = ({ webform, customComponents, ...props }: Props) => {
+	const [errors, setErrors] = useState<WebformErrors>({})
 
-	/**
-	 * Submit webform
-	 *
-	 * @param event Form event.
-	 */
-	const submit: React.FormEventHandler<HTMLFormElement> = async event => {
+	const submitHandler: React.FormEventHandler<HTMLFormElement> = async event => {
 		event.preventDefault()
 
 		const target = event.currentTarget
-		const data = formToJSON(target.elements)
 
+		// Clear errors from previous submit.
 		setErrors({})
 
-		if (props.onSubmit) {
-			props.onSubmit(data)
-		}
+		// Remove lingering css classes from previous submits.
+		target.classList.remove('form-submitting', 'form-error', 'form-submitted')
 
-		try {
-			// Post form data to endpoint.
-			const response = await axios.post(props.endpoint, {
-				...data,
-				entity_id: props.entityId,
-				entity_type: props.entityType,
-				webform_id: webformName
-			})
+		if ((!props.onValidate || props.onValidate(event)) && target.checkValidity()) {
+			// Let css know that this form was validated and is being submitted.
+			target.classList.add('was-validated', 'form-submitting')
 
-			if (response.data.error) {
-				throw { response }
+			// Serialize form data.
+			const data = formToJSON(target.elements)
+
+			try {
+				// If onSubmit returns false skip submitting to API.
+				if (props.onSubmit && (await props.onSubmit(data, event)) === false) {
+					target.classList.replace('form-submitting', 'form-submitted')
+					return
+				}
+
+				// Submit form to API.
+				const response = await axios.post(props.endpoint, {
+					...data,
+					webform_id: webform.drupal_internal__id
+				})
+
+				if (response.data.error) {
+					throw new WebformError(response)
+				}
+
+				// Convey current form state.
+				target.classList.replace('form-submitting', 'form-submitted')
+				props.onSuccess && props.onSuccess(event, response.data)
+			} catch (err) {
+				// API should return error structure if validation fails.
+				// We use that to render error messages to the form.
+				if (err.response && err.response.data.error) {
+					setErrors(err.response.data.error)
+				}
+
+				// Convey current form state.
+				target.classList.replace('form-submitting', 'form-error')
+				props.onError && props.onError(err, event)
 			}
-
-			console.log('Success', response.data)
-
-			// Call onSuccess handler.
-			if (props.onSuccess) {
-				props.onSuccess(target, response.data)
-			}
-		} catch (err) {
-			console.log(err)
-
-			if (err.response && err.response.data.error) {
-				setErrors(err.response.data.error)
-			}
-
-			// Call onError handler.
-			if (props.onError) {
-				props.onError(err)
-			}
-
-			// Propage to <Form> error handler.
-			throw err
+		} else {
+			// Let css know this form was validated.
+			target.classList.add('was-validated', 'form-error')
 		}
 	}
 
 	return (
-		<Form onSubmit={submit} className={className}>
+		<form
+			onSubmit={submitHandler}
+			id={props.id}
+			className={props.className}
+			style={props.style}
+			data-webform-id={webform.drupal_internal__id}
+		>
 			{/* Render webform elements */}
-			{elements.map(element => renderWebformElement(element, errors[element.name]))}
+			{webform.elements.map(element => (
+				<React.Fragment key={element.name}>
+					{renderWebformElement(element, errors[element.name], customComponents![element.name])}
+				</React.Fragment>
+			))}
 
-			{/* Render submit button if it is not defined in elements structure. */}
-			{elements.find(element => element._type === 'webform_actions') === undefined && <Button type="submit">Submit</Button>}
-
-			{/* This should be directly below submit button */}
-			{children}
-		</Form>
+			{/* Render default submit button if it is not defined in elements array. */}
+			{webform.elements.find(element => element.type === 'webform_actions') === undefined && (
+				<button type="submit">{DEFAULT_SUBMIT_LABEL}</button>
+			)}
+		</form>
 	)
 }
 
-/**
- * Render single webform element.
- */
-const renderWebformElement = (element: WebformElement, error?: string) => {
-	switch (element._type) {
-		case 'textfield':
-		case 'email':
-		case 'tel':
-			return <WebformInputElement key={element.name} element={element} error={error} />
-		case 'checkbox':
-		case 'checkboxes':
-		case 'radio':
-		case 'radios':
-			return <WebformOptionsElement key={element.name} element={element} error={error} />
-		case 'textarea':
-			return (
-				<Textarea
-					className={error && 'is-invalid'}
-					key={element.name}
-					name={element.name}
-					label={element._title}
-					required={element._required}
-					defaultValue={element._default_value}
-					disabled={element._disabled}
-					readOnly={element._readonly}
-					error={error}
-				/>
-			)
-		case 'processed_text':
-			return <div key={element.name} dangerouslySetInnerHTML={{ __html: element._text }} />
-		case 'webform_markup':
-			return <div key={element.name} dangerouslySetInnerHTML={{ __html: element._markup }} />
-		case 'webform_actions':
-			return (
-				<Button key={element.name} type="submit">
-					{element._submit__label}
-				</Button>
-			)
-		default:
-			return (
-				<code key={element}>
-					<pre>{JSON.stringify({ [name]: element }, null, 2)}</pre>
-				</code>
-			)
-	}
+Webform.defaultProps = {
+	customComponents: {}
 }
 
 export default Webform
 
 export const query = graphql`
-	fragment Webform on webform__webform {
-		name: drupal_internal__id
-		description
-		status
+	fragment SimpleWebform on webform__webform {
+		drupal_internal__id
 		elements {
 			name
-			_type
-			_title
-			_title_display
-			_default_value
-			_description
-			_markup
-			_maxlength
-			_placeholder
-			_required
-			_submit__label
-			_format
-			_text
+			type
+			attributes {
+				name
+				value
+			}
 		}
 	}
 `

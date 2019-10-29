@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Grant all user roles access to submit webforms via rest api.
+ */
+
+use Drupal\user\Entity\Role;
+
+/**
+ * Implements hook_install().
+ */
+function gatsby_webform_install() {
+  Role::load('anonymous')
+    ->grantPermission('restful post gatsby_webform_submit')
+    ->save();
+
+  Role::load('authenticated')
+    ->grantPermission('restful post gatsby_webform_submit')
+    ->save();
+}

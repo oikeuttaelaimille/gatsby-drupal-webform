@@ -1,4 +1,5 @@
 /**
+ * @file Utils
  * @see: https://lengstorf.com/code/get-form-values-as-json/
  */
 
@@ -9,7 +10,7 @@ type HTMLControlElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaEle
  * @param  {Element} element  the element to check
  * @return {Boolean}          true if the element is an input, false if not
  */
-const isValidElement = (element: HTMLControlElement): boolean => {
+const isValidElement = (element: any): element is HTMLControlElement => {
 	return !!(element.name && element.value)
 }
 
@@ -34,32 +35,34 @@ const isCheckbox = (element: HTMLControlElement): element is HTMLInputElement =>
  * @param  {Element} element  the element to check
  * @return {Boolean}          true if the element is a multiselect, false if not
  */
-const isMultiSelect = (element: HTMLControlElement): element is HTMLSelectElement =>
-	(element as HTMLSelectElement).options && (element as HTMLSelectElement).multiple
+const isMultiSelect = (element: any): element is HTMLSelectElement => element.options && (element as HTMLSelectElement).multiple
+
+type SelectedValuesReduceCallback = (values: string[], option: HTMLOptionElement) => string[]
 
 /**
  * Retrieves the selected options from a multi-select as an array.
  * @param  {HTMLOptionsCollection} options  the options for the select
  * @return {Array}                          an array of selected option values
  */
-const getSelectValues = (options: HTMLOptionsCollection): any[] =>
-	[].reduce.call(
+const getSelectValues = (options: HTMLOptionsCollection) =>
+	[].reduce.call<HTMLOptionsCollection, [SelectedValuesReduceCallback, []], ReturnType<SelectedValuesReduceCallback>>(
 		options,
-		(values: any, option: HTMLOptionElement) => {
-			return option.selected ? values.concat(option.value) : values
-		},
+		(values, option) => (option.selected ? values.concat(option.value) : values),
 		[]
-	) as any[]
+	)
+
+type FormJSON = { [name: string]: string | string[] }
+type FormJSONReduceCallback = (data: FormJSON, element: Element) => FormJSON
 
 /**
  * Retrieves input data from a form and returns it as a JSON object.
  * @param  {HTMLFormControlsCollection} elements  the form elements
  * @return {Object}                               form data as an object literal
  */
-export const formToJSON = (elements: HTMLFormControlsCollection): object =>
-	[].reduce.call(
+export const formToJSON = (elements: HTMLFormControlsCollection) =>
+	[].reduce.call<HTMLFormControlsCollection, [FormJSONReduceCallback, {}], ReturnType<FormJSONReduceCallback>>(
 		elements,
-		(data: any, element: any) => {
+		(data, element) => {
 			// Make sure the element has the required properties and should be added.
 			if (isValidElement(element) && isValidValue(element)) {
 				/*
@@ -78,7 +81,7 @@ export const formToJSON = (elements: HTMLFormControlsCollection): object =>
 			return data
 		},
 		{}
-	) as {}
+	)
 
 /**
  * Join classNames together.

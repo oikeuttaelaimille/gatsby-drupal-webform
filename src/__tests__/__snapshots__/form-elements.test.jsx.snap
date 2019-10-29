@@ -1,213 +1,89 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`InputGroup renders correctly 1`] = `
-<div
-  className="form-group input-group custom-class"
->
-  <label>
-    <span
-      className="form-control-label"
-    >
-      Test Input Group
-    </span>
-    <input
-      className="form-control"
-      type="email"
-    />
-    <div
-      className="input-group-add-on"
-    >
-      Add-on
-    </div>
-  </label>
-</div>
-`;
-
 exports[`Webform renders correctly 1`] = `
 <form
-  className="form custom-class"
-  noValidate={true}
+  className="my-form"
+  data-webform-id="contact"
   onSubmit={[Function]}
+  style={
+    Object {
+      "color": "black",
+    }
+  }
 >
   <div
     className="form-group"
   >
-    <label>
-      <span
-        className="form-control-label"
-      >
-        Your Name
-      </span>
-      <input
-        className="form-control"
-        name="name"
-        required={true}
-        type="text"
-      />
-      <span
-        className="form-text"
-      >
-        What is your name?
-      </span>
-    </label>
-  </div>
-  <div
-    className="form-group"
-  >
-    <label>
-      <span
-        className="form-control-label"
-      >
-        Your Email
-      </span>
-      <input
-        className="form-control"
-        name="email"
-        required={true}
-        type="email"
-      />
-    </label>
-  </div>
-  <div
-    className="form-group"
-  >
-    <label>
-      <span
-        className="form-control-label"
-      >
-        Subject
-      </span>
-      <input
-        className="form-control"
-        name="subject"
-        required={true}
-        type="text"
-      />
-    </label>
-  </div>
-  <div
-    className="form-group"
-  >
-    <label>
-      <span
-        className="form-control-label"
-      >
-        Message
-      </span>
-      <input
-        as="textarea"
-        className="form-control"
-        name="message"
-        required={true}
-      />
-    </label>
-  </div>
-  <div
-    className="form-group form-check"
-  >
-    <input
-      className="form-check-input"
-      defaultChecked={false}
-      id="i"
-      name="consent"
-      required={true}
-      type="checkbox"
-    />
     <label
-      className="form-check-label"
-      htmlFor="i"
+      htmlFor="form-name"
     >
-      Add me to email list
+      Your Name
     </label>
+    <input
+      className="form-control"
+      defaultValue="John"
+      id="form-name"
+      name="name"
+      required="true"
+      type="text"
+    />
   </div>
   <div
-    className="option-group"
+    className="form-group"
   >
-    <div
-      className="form-group form-check"
+    <label
+      htmlFor="form-email"
     >
-      <input
-        className="form-check-input"
-        defaultChecked={false}
-        id="i"
-        name="color"
-        type="radio"
-        value="blue"
-      />
-      <label
-        className="form-check-label"
-        htmlFor="i"
-      >
-        Blue
-      </label>
-    </div>
-    <div
-      className="form-group form-check"
-    >
-      <input
-        className="form-check-input"
-        defaultChecked={false}
-        id="i"
-        name="color"
-        type="radio"
-        value="red"
-      />
-      <label
-        className="form-check-label"
-        htmlFor="i"
-      >
-        Red
-      </label>
-    </div>
-    <div
-      className="form-group form-check"
-    >
-      <input
-        className="form-check-input"
-        defaultChecked={false}
-        id="i"
-        name="color"
-        type="radio"
-        value="pink"
-      />
-      <label
-        className="form-check-label"
-        htmlFor="i"
-      >
-        Pink
-      </label>
-    </div>
+      Your Email
+    </label>
+    <input
+      className="form-control"
+      defaultValue="john@example.com"
+      id="form-email"
+      name="email"
+      required="true"
+      type="email"
+    />
   </div>
   <div
-    dangerouslySetInnerHTML={
-      Object {
-        "__html": "<p>Custom markup</p>",
-      }
-    }
-  />
-  <div
-    dangerouslySetInnerHTML={
-      Object {
-        "__html": undefined,
-      }
-    }
-  />
-  <code>
-    <pre>
-      {
-  "nodejs": {
-    "name": "unknown",
-    "_type": "unknown",
-    "_title": "Unknown element"
-  }
-}
-    </pre>
-  </code>
-  <button
-    className="btn"
-    type="submit"
+    className="form-group"
   >
-    Submit
-  </button>
+    <label
+      htmlFor="form-subject"
+    >
+      Subject
+    </label>
+    <input
+      className="form-control"
+      id="form-subject"
+      name="subject"
+      required="true"
+      type="email"
+    />
+  </div>
+  <div
+    className="form-group"
+  >
+    <label
+      htmlFor="form-message"
+    >
+      Subject
+    </label>
+    <textarea
+      className="form-control"
+      id="form-message"
+      name="message"
+      required="true"
+    />
+  </div>
+  <div
+    className="form-group"
+  >
+    <button
+      type="submit"
+    >
+      Send message
+    </button>
+  </div>
 </form>
 `;

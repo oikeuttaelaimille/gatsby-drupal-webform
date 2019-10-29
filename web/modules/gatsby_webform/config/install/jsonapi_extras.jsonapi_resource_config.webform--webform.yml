@@ -1,0 +1,142 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - webform
+id: webform--webform
+disabled: false
+path: webform/webform
+resourceType: webform--webform
+resourceFields:
+  uuid:
+    fieldName: uuid
+    publicName: uuid
+    enhancer:
+      id: ''
+    disabled: false
+  langcode:
+    fieldName: langcode
+    publicName: langcode
+    enhancer:
+      id: ''
+    disabled: false
+  status:
+    fieldName: status
+    publicName: status
+    enhancer:
+      id: ''
+    disabled: false
+  dependencies:
+    disabled: true
+    fieldName: dependencies
+    publicName: dependencies
+    enhancer:
+      id: ''
+  third_party_settings:
+    disabled: true
+    fieldName: third_party_settings
+    publicName: third_party_settings
+    enhancer:
+      id: ''
+  _core:
+    disabled: true
+    fieldName: _core
+    publicName: _core
+    enhancer:
+      id: ''
+  open:
+    fieldName: open
+    publicName: open
+    enhancer:
+      id: ''
+    disabled: false
+  close:
+    fieldName: close
+    publicName: close
+    enhancer:
+      id: ''
+    disabled: false
+  weight:
+    fieldName: weight
+    publicName: weight
+    enhancer:
+      id: ''
+    disabled: false
+  uid:
+    fieldName: uid
+    publicName: uid
+    enhancer:
+      id: ''
+    disabled: false
+  template:
+    fieldName: template
+    publicName: template
+    enhancer:
+      id: ''
+    disabled: false
+  archive:
+    fieldName: archive
+    publicName: archive
+    enhancer:
+      id: ''
+    disabled: false
+  id:
+    fieldName: id
+    publicName: id
+    enhancer:
+      id: ''
+    disabled: false
+  title:
+    fieldName: title
+    publicName: title
+    enhancer:
+      id: ''
+    disabled: false
+  description:
+    fieldName: description
+    publicName: description
+    enhancer:
+      id: ''
+    disabled: false
+  category:
+    fieldName: category
+    publicName: category
+    enhancer:
+      id: ''
+    disabled: false
+  elements:
+    fieldName: elements
+    publicName: elements
+    enhancer:
+      id: webform_elements
+    disabled: false
+  css:
+    disabled: true
+    fieldName: css
+    publicName: css
+    enhancer:
+      id: ''
+  javascript:
+    disabled: true
+    fieldName: javascript
+    publicName: javascript
+    enhancer:
+      id: ''
+  settings:
+    disabled: true
+    fieldName: settings
+    publicName: settings
+    enhancer:
+      id: ''
+  access:
+    disabled: true
+    fieldName: access
+    publicName: access
+    enhancer:
+      id: ''
+  handlers:
+    disabled: true
+    fieldName: handlers
+    publicName: handlers
+    enhancer:
+      id: ''

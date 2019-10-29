@@ -8,7 +8,7 @@ React component and graphql fragments for [webforms](https://www.drupal.org/proj
 
 ### Setup
 
-Install drupal dependencies (TBD). Drupal needs to process jsonapi webform data to more usable format and expose endpoint for submitting forms.
+Install [drupal dependency](./drupal-module). Drupal needs to process jsonapi webform data to more usable format and expose endpoint for submitting forms.
 
 
 ```

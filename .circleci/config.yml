@@ -1,0 +1,155 @@
+# Use the latest 2.1 version of CircleCI pipeline processing engine, see https://circleci.com/docs/2.0/configuration-reference/
+version: 2.1
+
+executors:
+  browsers:
+    working_directory: ~/project
+    docker:
+      - image: circleci/php:7.3-apache-node-browsers
+      - image: circleci/mariadb:latest
+
+workflows:
+  test:
+    jobs:
+      - test
+
+jobs:
+  test:
+    executor: browsers
+    steps:
+      - checkout
+
+      - npm-install
+      - run:
+          name: Run NPM tests
+          command: |
+            npm run build
+            npm run test
+
+      - run:
+          name: Execute Chrome in Background
+          command: google-chrome-stable --headless --no-default-browser-check --no-first-run --disable-translate --remote-debugging-port=9222 --disable-gpu
+          background: true
+
+      #
+      # Setup drupal
+      #
+
+      - disable-php-memory-limit
+      - run:
+          name: Install PHP extensions
+          command: |
+            sudo apt-get update -y
+            sudo apt-get install -y libpng-dev mariadb-client
+            sudo docker-php-ext-install gd pdo_mysql
+
+      - run: sudo composer self-update
+      - composer-install
+
+      - run:
+          name: Wait for database connection
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
+
+      - run:
+          name: Install drupal
+          command: |
+            composer drupal-scaffold
+            ./vendor/bin/drush site-install -y -vvv --db-url='mysql://root@127.0.0.1:3306/circle_test' --account-name='admin' --account-pass='admin'
+            ./vendor/bin/drush en -y gatsby_webform basic_auth
+
+      - run:
+          name: Configure & start apache
+          command: |
+            echo '127.0.0.1 drupal.test' | sudo tee --append /etc/hosts
+            sudo cp .circleci/vhosts.conf /etc/apache2/sites-available/000-default.conf
+            sudo a2enmod rewrite
+            sudo a2enmod headers
+            sudo a2ensite 000-default
+            sudo service apache2 restart
+       
+      - run:
+          name: Curl drupal site
+          command: curl http://drupal.test/
+
+      - run:
+          name: Package library
+          command: |
+            npm pack
+            mv ./$(jq -r '.name + "-" + .version + ".tgz"' package.json) ./gatsby-drupal-webform.tgz
+
+      - run: npm install --prefix examples/gatsby-webforms
+      - run:
+          name: Run E2E tests
+          command: npm run test:e2e:ci --prefix examples/gatsby-webforms
+
+      - run: 
+          name: Release
+          command: npx semantic-release
+         
+      - store_artifacts:
+          path: examples/gatsby-webforms/cypress/videos
+      - store_artifacts:
+          path: examples/gatsby-webforms/cypress/screenshots
+
+commands:
+  disable-php-memory-limit:
+    steps:
+      - run:
+          name: Disable PHP memory limit
+          command: echo 'memory_limit=-1' | sudo tee -a /usr/local/etc/php/php.ini
+
+  composer-install:
+    parameters:
+      working-dir:
+        type: string
+        default: .
+    description: "Install composer dependencies"
+    steps:
+      # special step to restore the dependency cache if `composer.lock` does not change
+      # fallback to using the latest cache if no exact match is found (See https://circleci.com/docs/2.0/caching/)
+      - restore_cache:
+          keys:
+            - composer-{{ .Environment.CACHE_VERSION }}-{{ checksum "<< parameters.working-dir >>/composer.lock" }}
+            - composer-{{ .Environment.CACHE_VERSION }}-
+      - run:
+          name: Composer install
+          command: composer install --no-interaction --no-progress --prefer-dist --working-dir "<< parameters.working-dir >>/"
+          environment:
+            COMPOSER_MEMORY_LIMIT: -1
+
+      # special step to save the dependency cache with the `composer.lock` cache key template
+      - save_cache:
+          key: composer-{{ .Environment.CACHE_VERSION }}-{{ checksum "<< parameters.working-dir >>/composer.lock" }}
+          paths:
+            - << parameters.working-dir >>/vendor
+            - '{{ .Environment.HOME }}/.composer'
+
+  npm-install:
+    parameters:
+      only:
+        type: string
+        default: ""
+      prefix:
+        type: string
+        default: .
+    steps:
+      # Caching node_modules is mostly pointless since npm ci deletes that anyway.
+      - restore_cache:
+          keys:
+            - npm-{{ .Environment.CACHE_VERSION }}-{{ checksum "<< parameters.prefix >>/package-lock.json" }}
+            - npm-{{ .Environment.CACHE_VERSION }}-
+
+      - when:
+          condition: << parameters.only >>
+          steps:
+            - run: npm ci --only "<< parameters.only >>" --prefix << parameters.prefix >>
+      - unless:
+          condition: << parameters.only >>
+          steps:
+            - run: npm ci --prefix << parameters.prefix >>
+
+      - save_cache:
+          key: npm-{{ .Environment.CACHE_VERSION }}-{{ checksum "<< parameters.prefix >>/package-lock.json" }}
+          paths:
+            - '<< parameters.prefix >>/node_modules'
+            - '{{ .Environment.HOME }}/.npm'
