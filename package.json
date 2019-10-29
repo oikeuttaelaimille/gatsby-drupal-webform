@@ -5,7 +5,7 @@
   "author": "Santeri Hurnanen <santeri@oikeuttaelaimille.fi>",
   "license": "MIT",
   "main": "dist/index.js",
-  "typings": "dist/types.d.ts",
+  "typings": "dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -13,7 +13,7 @@
     "test": "jest",
     "build": "npm run build:lib && npm run build:types",
     "build:lib": "tsc",
-    "build:types": "tsc --declaration --emitDeclarationOnly --outFile dist/types.d.ts",
+    "build:types": "tsc --declaration --emitDeclarationOnly --outDir dist/",
     "commit": "git-cz"
   },
   "keywords": [
