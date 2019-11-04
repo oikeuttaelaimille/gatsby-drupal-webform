@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.0.0...v2.0.1) (2019-11-04)
+
+
+### Bug Fixes
+
+* fix readme ([ad58796](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/ad5879625267e8d0124ca076eaba1f410ff15912))
+
 # [2.0.0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v1.0.3...v2.0.0) (2019-11-04)
 
 
