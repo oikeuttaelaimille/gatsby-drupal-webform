@@ -31,6 +31,10 @@ jobs:
           command: google-chrome-stable --headless --no-default-browser-check --no-first-run --disable-translate --remote-debugging-port=9222 --disable-gpu
           background: true
 
+      - run:
+          name: Wait for database connection
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
+
       #
       # Setup drupal
       #
@@ -44,15 +48,12 @@ jobs:
             sudo docker-php-ext-install gd pdo_mysql
 
       - run: sudo composer self-update
-      - composer-install
-
-      - run:
-          name: Wait for database connection
-          command: dockerize -wait tcp://localhost:3306 -timeout 1m
-
+      - composer-install:
+          working-dir: examples/drupal
       - run:
           name: Install drupal
           command: |
+            cd examples/drupal
             composer drupal-scaffold
             ./vendor/bin/drush site-install -y -vvv --db-url='mysql://root@127.0.0.1:3306/circle_test' --account-name='admin' --account-pass='admin'
             ./vendor/bin/drush en -y gatsby_webform basic_auth

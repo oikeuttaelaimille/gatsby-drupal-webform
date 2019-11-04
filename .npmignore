@@ -1,6 +1,5 @@
 src/
-web/
-scripts/
 examples/
+modules/
 tsconfig.json
 tslint.json
