@@ -1,3 +1,21 @@
+# [2.0.0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v1.0.3...v2.0.0) (2019-11-04)
+
+
+### Bug Fixes
+
+* move drupal to examples directory ([367253f](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/367253f01935c9157d5fc1eac1d59dc413317a79))
+* try this to get types working :) ([1fcc419](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/1fcc419396a0cc167f9dad5e112072055791d7e7))
+
+
+### Features
+
+* add drupal module ([897e221](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/897e221ace9b18278315009b630839b066d8499c))
+
+
+### BREAKING CHANGES
+
+* api format change
+
 ## [1.0.3](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v1.0.2...v1.0.3) (2019-09-09)
 
 
