@@ -156,7 +156,7 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 
 				// Convey current form state.
 				target.classList.replace('form-submitting', 'form-submitted')
-				props.onSuccess && props.onSuccess(event, response.data)
+				props.onSuccess && props.onSuccess(response.data, event)
 			} catch (err) {
 				// API should return error structure if validation fails.
 				// We use that to render error messages to the form.
