@@ -1,3 +1,11 @@
+## [2.0.3](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.0.2...v2.0.3) (2019-11-23)
+
+
+### Bug Fixes
+
+* correctly hide hidden elements ([903307d](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/903307d856d7cb2119145200f7f36a831db367a8))
+* fix custom components using name instead of type (typo) ([7f775d5](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/7f775d52dd46f4908ebd05ea37e7d3f199aeb932))
+
 ## [2.0.2](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.0.1...v2.0.2) (2019-11-04)
 
 
