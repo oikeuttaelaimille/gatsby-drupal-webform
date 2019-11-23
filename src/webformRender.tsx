@@ -57,8 +57,8 @@ function getOptionId(name: string, value: string) {
 /**
  * Return true if element title should be visually hidden.
  */
-function isTitleHidden(type: string, props: GenericProps) {
-	return type === 'hidden' || props['#title_display'] === 'invisible'
+function isTitleHidden(props: GenericProps) {
+	return props['#title_display'] === 'invisible'
 }
 
 /**
@@ -244,9 +244,13 @@ export const WebformInputElement: React.FC<WebformComponentProps> = ({ typeOverr
 		return <></>
 	}
 
+	if (type === 'hidden') {
+		return <input id={id} className="form-control" {...props} />
+	}
+
 	return (
 		<div className="form-group">
-			<WebformLabel htmlFor={id} visuallyHidden={isTitleHidden(type, other)}>
+			<WebformLabel htmlFor={id} visuallyHidden={isTitleHidden(other)}>
 				{other['#title']}
 			</WebformLabel>
 
@@ -275,7 +279,7 @@ export const WebformTextareaElement: React.FC<WebformComponentProps> = ({ elemen
 
 	return (
 		<div className="form-group">
-			<WebformLabel htmlFor={id} visuallyHidden={isTitleHidden(element.type, other)}>
+			<WebformLabel htmlFor={id} visuallyHidden={isTitleHidden(other)}>
 				{other['#title']}
 			</WebformLabel>
 
@@ -301,7 +305,7 @@ export const WebformSelectElement: React.FC<WebformComponentProps> = ({ element,
 
 	return (
 		<div className="form-group">
-			<WebformLabel htmlFor={id} visuallyHidden={isTitleHidden('select', other)}>
+			<WebformLabel htmlFor={id} visuallyHidden={isTitleHidden(other)}>
 				{other['#title']}
 			</WebformLabel>
 
@@ -343,7 +347,7 @@ export const WebformCheckboxElement: React.FC<WebformComponentProps> = ({ typeOv
 		<div className="form-group form-check">
 			<input id={id} className="form-check-input" defaultChecked={!!defaultValue} {...props} />
 
-			<WebformLabel htmlFor={id} visuallyHidden={isTitleHidden(type, other)} className="form-check-label">
+			<WebformLabel htmlFor={id} visuallyHidden={isTitleHidden(other)} className="form-check-label">
 				{other['#title']}
 			</WebformLabel>
 
@@ -368,7 +372,7 @@ export const WebformCheckboxGroup: React.FC<WebformComponentProps> = ({ typeOver
 	return (
 		<div className="form-group">
 			{/** Title for whole group. */}
-			<WebformLabel visuallyHidden={isTitleHidden(type, other)}>{other['#title']}</WebformLabel>
+			<WebformLabel visuallyHidden={isTitleHidden(other)}>{other['#title']}</WebformLabel>
 
 			{element.options &&
 				element.options.map(option => (
