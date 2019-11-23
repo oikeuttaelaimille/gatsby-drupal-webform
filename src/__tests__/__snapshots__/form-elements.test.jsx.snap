@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Webform renders correctly 1`] = `
+exports[`Webform contact form renders correctly 1`] = `
 <form
   className="my-form"
   data-webform-id="contact"
@@ -85,5 +85,74 @@ exports[`Webform renders correctly 1`] = `
       Send message
     </button>
   </div>
+</form>
+`;
+
+exports[`Webform hidden inputs 1`] = `
+<form
+  className="my-form"
+  data-webform-id="contact"
+  onSubmit={[Function]}
+  style={
+    Object {
+      "color": "black",
+    }
+  }
+>
+  <input
+    className="form-control"
+    id="form-name"
+    name="name"
+    type="hidden"
+  />
+  <button
+    type="submit"
+  >
+    Submit
+  </button>
+</form>
+`;
+
+exports[`Webform title attributes 1`] = `
+<form
+  className="my-form"
+  data-webform-id="contact"
+  onSubmit={[Function]}
+  style={
+    Object {
+      "color": "black",
+    }
+  }
+>
+  <div
+    className="form-group"
+  >
+    <label
+      htmlFor="form-name"
+      style={
+        Object {
+          "clip": "rect(1px,1px,1px,1px)",
+          "height": "1px",
+          "overflow": "hidden",
+          "position": "absolute",
+          "width": "1px",
+          "wordWrap": "normal",
+        }
+      }
+    >
+      Your Name
+    </label>
+    <input
+      className="form-control"
+      id="form-name"
+      name="name"
+      type="text"
+    />
+  </div>
+  <button
+    type="submit"
+  >
+    Submit
+  </button>
 </form>
 `;

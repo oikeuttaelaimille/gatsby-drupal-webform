@@ -88,7 +88,59 @@ const webform = {
 }
 
 describe('Webform', () => {
-	it('renders correctly', () => {
+	it('contact form renders correctly', () => {
+		const tree = renderer
+			.create(<Webform className="my-form" style={{ color: 'black' }} endpoint="/form-submit" webform={webform} />)
+			.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	it('title attributes', () => {
+		const webform = {
+			drupal_internal__id: 'contact',
+			elements: [
+				{
+					name: 'name',
+					type: 'textfield',
+					attributes: [
+						{
+							name: '#title',
+							value: 'Your Name'
+						},
+						{
+							name: '#title_display',
+							value: 'invisible'
+						}
+					]
+				}
+			]
+		}
+
+		const tree = renderer
+			.create(<Webform className="my-form" style={{ color: 'black' }} endpoint="/form-submit" webform={webform} />)
+			.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	it('hidden inputs', () => {
+		const webform = {
+			drupal_internal__id: 'contact',
+			elements: [
+				{
+					name: 'name',
+					type: 'hidden',
+					attributes: [
+						{
+							name: '#title',
+							value: 'Your Name'
+						}
+					]
+				}
+			]
+		}
+
 		const tree = renderer
 			.create(<Webform className="my-form" style={{ color: 'black' }} endpoint="/form-submit" webform={webform} />)
 			.toJSON()
