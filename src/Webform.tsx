@@ -185,7 +185,7 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 			{/* Render webform elements */}
 			{webform.elements.map(element => (
 				<React.Fragment key={element.name}>
-					{renderWebformElement(element, errors[element.name], customComponents![element.name])}
+					{renderWebformElement(element, errors[element.name], customComponents![element.type])}
 				</React.Fragment>
 			))}
 
