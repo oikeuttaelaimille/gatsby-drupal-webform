@@ -1,3 +1,10 @@
+## [2.1.2](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.1.1...v2.1.2) (2019-11-27)
+
+
+### Bug Fixes
+
+* add id attribute to select element ([d7e7d1b](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/d7e7d1b2717f8a6696491e1170f9d28dc222d3f9))
+
 ## [2.1.1](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.1.0...v2.1.1) (2019-11-27)
 
 
