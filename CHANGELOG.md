@@ -1,3 +1,11 @@
+# [2.1.0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.0.3...v2.1.0) (2019-11-27)
+
+
+### Features
+
+* add novalidate prop to component ([f0e1040](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/f0e104067a59dacc81e102030d648de84bec1bf3))
+* export WebformCustomComponent type ([d37e3a2](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/d37e3a24369d2d573df72ac62bb4a5ea6a16a78e))
+
 ## [2.0.3](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.0.2...v2.0.3) (2019-11-23)
 
 
