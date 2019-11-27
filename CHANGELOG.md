@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.1.0...v2.1.1) (2019-11-27)
+
+
+### Bug Fixes
+
+* spelling noValidate ([57b3808](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/57b3808e6f078638380fe30502e1b39a4e742392))
+
 # [2.1.0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.0.3...v2.1.0) (2019-11-27)
 
 
