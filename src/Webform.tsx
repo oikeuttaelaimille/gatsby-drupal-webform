@@ -92,7 +92,7 @@ interface Props {
 	id?: string
 	className?: string
 	style?: React.CSSProperties
-	novalidate?: boolean
+	noValidate?: boolean
 
 	webform: WebformObject
 
@@ -181,7 +181,7 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 			id={props.id}
 			className={props.className}
 			style={props.style}
-			noValidate={props.novalidate}
+			noValidate={props.noValidate}
 			data-webform-id={webform.drupal_internal__id}
 		>
 			{/* Render webform elements */}
