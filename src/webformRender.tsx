@@ -309,7 +309,7 @@ export const WebformSelectElement: React.FC<WebformComponentProps> = ({ element,
 				{other['#title']}
 			</WebformLabel>
 
-			<select className="form-control" {...props} defaultValue={props.defaultValue || ''}>
+			<select id={id} className="form-control" {...props} defaultValue={props.defaultValue || ''}>
 				{/** Render placeholder as first element */}
 				<option value="" disabled>
 					{placeholder || DEFAULT_SELECT_LABEL}
