@@ -1,19 +1,19 @@
 import React from 'react'
 
 import { WebformCustomComponent } from '..'
-import { getOptionId, useWebformStates, getProps } from '../utils'
+import { getOptionId, useWebformElement } from '../utils'
 
 import WebformElementWrapper from './WebformElementWrapper'
 
 export const WebformCheckboxGroup: WebformCustomComponent = ({ element, error }) => {
-	const states = useWebformStates(element.states || [])
-	const {
-		inputProps: { defaultValue, ...props },
-		webformAttributes
-	} = getProps(element, { name: element.name, type: element.type, className: 'form-check-input' })
+	const [{ defaultValue, ...inputProps }, settings] = useWebformElement(element, {
+		className: 'form-check-input',
+		name: element.name,
+		type: element.type
+	})
 
 	return (
-		<WebformElementWrapper webformAttributes={webformAttributes} states={states} error={error}>
+		<WebformElementWrapper settings={settings} error={error}>
 			{element.options &&
 				element.options.map(option => (
 					<div className="form-check" key={option.value}>
@@ -22,7 +22,7 @@ export const WebformCheckboxGroup: WebformCustomComponent = ({ element, error })
 							id={getOptionId(element.name, option.value)}
 							value={option.value}
 							defaultChecked={defaultValue === option.value}
-							{...props}
+							{...inputProps}
 						/>
 
 						{/** Label for this option. */}

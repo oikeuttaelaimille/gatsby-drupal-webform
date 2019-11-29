@@ -1,25 +1,21 @@
 import React from 'react'
 
-import { useWebformStates, getProps } from '../utils'
-
-type WebformStates = ReturnType<typeof useWebformStates>
-type WebformAttributes = ReturnType<typeof getProps>['webformAttributes']
+import { WebformSettings } from '../Webform'
 
 interface Props extends React.HTMLProps<HTMLDivElement> {
+	settings: WebformSettings
 	labelFor?: string
-	states: WebformStates
-	webformAttributes: WebformAttributes
 	error?: string
 }
 
 /**
  * Return true if element title should be visually hidden.
  */
-function isTitleHidden(webformAttributes: WebformAttributes) {
+export function isTitleHidden(webformAttributes: WebformSettings['attributes']) {
 	return webformAttributes.title_display === 'invisible'
 }
 
-export function getTileStyle(webformAttributes: WebformAttributes): React.CSSProperties | undefined {
+export function getTileStyle(webformAttributes: WebformSettings['attributes']): React.CSSProperties | undefined {
 	if (isTitleHidden(webformAttributes)) {
 		return {
 			position: 'absolute',
@@ -34,32 +30,34 @@ export function getTileStyle(webformAttributes: WebformAttributes): React.CSSPro
 	return undefined
 }
 
-export function getTitleDisplay(webformAttributes: WebformAttributes): 'before' | 'after' {
+export function getTitleDisplay(webformAttributes: WebformSettings['attributes']): 'before' | 'after' {
 	return webformAttributes.title_display === 'after' ? 'after' : 'before'
 }
 
-export function isElementHidden(states: WebformStates): boolean {
+export function isElementHidden(states: WebformSettings['states']): boolean {
 	return states.hidden === true || states.visible === false
 }
 
-const ElementWrapper: React.FC<Props> = ({ children, className, labelFor, states, webformAttributes, error, ...props }) => {
+const ElementWrapper: React.FC<Props> = ({ children, settings, error, labelFor, ...props }) => {
+	const { states, attributes } = settings
+
 	if (states && isElementHidden(states)) {
 		return <></>
 	}
 
 	const label = (
-		<label style={getTileStyle(webformAttributes)} htmlFor={labelFor}>
-			{webformAttributes.title}
+		<label style={getTileStyle(attributes)} htmlFor={labelFor}>
+			{attributes.title}
 		</label>
 	)
 
 	return (
-		<div className={className || 'form-group'} {...props}>
-			{getTitleDisplay(webformAttributes) === 'before' && label}
+		<div className="form-group" {...props}>
+			{getTitleDisplay(attributes) === 'before' && label}
 
 			{children}
 
-			{getTitleDisplay(webformAttributes) === 'after' && label}
+			{getTitleDisplay(attributes) === 'after' && label}
 
 			{error && (
 				<div className="form-text invalid-feedback" {...props}>
@@ -67,8 +65,8 @@ const ElementWrapper: React.FC<Props> = ({ children, className, labelFor, states
 				</div>
 			)}
 
-			{webformAttributes.description && (
-				<div className="form-text description" {...props} dangerouslySetInnerHTML={{ __html: webformAttributes.description }} />
+			{attributes.description && (
+				<div className="form-text description" {...props} dangerouslySetInnerHTML={{ __html: attributes.description }} />
 			)}
 		</div>
 	)

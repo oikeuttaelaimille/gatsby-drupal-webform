@@ -1,113 +1,18 @@
 import { useState, useEffect } from 'react'
 
-import { WebformState, WebformElementStates, WebformElement } from './Webform'
+import { WebformSettings, WebformElement } from './Webform'
+import { formToJSON } from './formToJSON'
 
-/** Webform attribute names that should be <input> element properties. */
+/** Webform attribute names that map to object that can be spread to <input> elements. */
 export const HTML_ATTRIBUTE_WHITELIST = ['required', 'defaultValue', 'disabled', 'readonly', 'placeholder', 'multiple'] as const
 
-/**
- * @file Utils
- * @see: https://lengstorf.com/code/get-form-values-as-json/
- */
+type InputProps = Partial<{ [name in typeof HTML_ATTRIBUTE_WHITELIST[number]]: any }>
 
-type HTMLControlElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+/** Item type of state property in webform element */
+type State = Exclude<WebformElement['states'], undefined>[number]
 
-/**
- * Checks that an element has a non-empty `name` and `value` property.
- * @param  {Element} element  the element to check
- * @return {Boolean}          true if the element is an input, false if not
- */
-const isValidElement = (element: any): element is HTMLControlElement => {
-	return !!(element.name && element.value)
-}
-
-/**
- * Checks if an element’s value can be saved (e.g. not an unselected checkbox).
- * @param  {Element} element  the element to check
- * @return {Boolean}          true if the value should be added, false if not
- */
-const isValidValue = (element: HTMLControlElement) => {
-	return !['checkbox', 'radio'].includes(element.type) || (element as HTMLInputElement).checked
-}
-
-/**
- * Checks if an input is a checkbox, because checkboxes allow multiple values.
- * @param  {Element} element  the element to check
- * @return {Boolean}          true if the element is a checkbox, false if not
- */
-const isCheckbox = (element: HTMLControlElement): element is HTMLInputElement => element.type === 'checkbox'
-
-/**
- * Checks if an input is a `select` with the `multiple` attribute.
- * @param  {Element} element  the element to check
- * @return {Boolean}          true if the element is a multiselect, false if not
- */
-const isMultiSelect = (element: any): element is HTMLSelectElement => element.options && (element as HTMLSelectElement).multiple
-
-type SelectedValuesReduceCallback = (values: string[], option: HTMLOptionElement) => string[]
-
-/**
- * Retrieves the selected options from a multi-select as an array.
- * @param  {HTMLOptionsCollection} options  the options for the select
- * @return {Array}                          an array of selected option values
- */
-const getSelectValues = (options: HTMLOptionsCollection) =>
-	[].reduce.call<HTMLOptionsCollection, [SelectedValuesReduceCallback, []], ReturnType<SelectedValuesReduceCallback>>(
-		options,
-		(values, option) => (option.selected ? values.concat(option.value) : values),
-		[]
-	)
-
-type FormJSON = { [name: string]: string | string[] }
-type FormJSONReduceCallback = (data: FormJSON, element: Element) => FormJSON
-
-/**
- * Retrieves input data from a form and returns it as a JSON object.
- * @param  {HTMLFormControlsCollection} elements  the form elements
- * @return {Object}                               form data as an object literal
- */
-export const formToJSON = (elements: HTMLFormControlsCollection) =>
-	[].reduce.call<HTMLFormControlsCollection, [FormJSONReduceCallback, {}], ReturnType<FormJSONReduceCallback>>(
-		elements,
-		(data, element) => {
-			// Make sure the element has the required properties and should be added.
-			if (isValidElement(element) && isValidValue(element)) {
-				/*
-				 * Some fields allow for more than one value, so we need to check if this
-				 * is one of those fields and, if so, store the values as an array.
-				 */
-				if (isCheckbox(element)) {
-					data[element.name] = (data[element.name] || []).concat(element.value)
-				} else if (isMultiSelect(element)) {
-					data[element.name] = getSelectValues(element.options)
-				} else {
-					data[element.name] = element.value
-				}
-			}
-
-			return data
-		},
-		{}
-	)
-
-/**
- * Join classNames together.
- * @param  {Array} args classnames
- * @return {String}
- */
-export function classNames(...args: (undefined | false | string | number)[]): string {
-	const classes = []
-
-	for (const arg of args) {
-		if (!arg) continue
-
-		if (typeof arg === 'string' || typeof arg === 'number') {
-			classes.push(arg)
-		}
-	}
-
-	return classes.join(' ')
-}
+// Re-export
+export { formToJSON }
 
 /**
  * Check if form state conditions are true.
@@ -117,8 +22,8 @@ export function classNames(...args: (undefined | false | string | number)[]): st
  *
  * @return true if element passes all conditions
  */
-function checkConditions(element: Element, state: WebformState): boolean {
-	return Object.entries(state.condition).every(([condition, value]) => {
+function checkConditions(element: Element, conditions: State['condition']): boolean {
+	return Object.entries(conditions).every(([condition, value]) => {
 		// Ignore conditions that are not defined for this state.
 		if (value == null) {
 			return true
@@ -140,10 +45,21 @@ function checkConditions(element: Element, state: WebformState): boolean {
 	})
 }
 
-function guessInitialState(webformStates: WebformState[]) {
-	const initialState: WebformElementStates = {}
+/**
+ * Attempt to guess initial state.
+ *
+ * This is to have something for the initial render. This is an attempt to
+ * reduce flickering and elements jumping around.
+ *
+ * Guesses:
+ *  - If hidden|visible states are present assume they are used to initally hide.
+ *
+ * @param states
+ */
+function guessInitialState(states: State[]) {
+	const initialState: WebformSettings['states'] = {}
 
-	for (const state of webformStates) {
+	for (const state of states) {
 		switch (state.state) {
 			case 'hidden':
 				initialState[state.state] = true
@@ -157,47 +73,52 @@ function guessInitialState(webformStates: WebformState[]) {
 	return initialState
 }
 
-export function useWebformStates(webformStates: WebformState[]) {
+type UseStateCallback = (value: React.SetStateAction<{}>) => void
+
+function handleOnChange(state: State, setState: UseStateCallback, event: Event) {
+	const { state: stateName, condition } = state
+	const element = event.currentTarget as Element
+
+	setState(prevState => ({
+		...prevState,
+
+		[stateName]: checkConditions(element, condition)
+	}))
+}
+
+function useWebformStates(webformStates: State[]) {
 	const [states, setStates] = useState(guessInitialState(webformStates))
 
-	// Todo guess initial state.
-
 	useEffect(() => {
-		//const handleOnChange: React
-		function handleOnChange(this: WebformState, event: Event) {
-			const element = event.currentTarget as Element
+		const initialState: typeof states = {}
 
-			setStates({
-				...states,
-				// Store true if all conditions are true.
-				[this.state]: checkConditions(element, this)
-			})
-		}
-
-		const callbacks: any[] = []
-		const initialStates: typeof states = {}
+		// Keep track of all elements and their callbacks so they can be cleaned.
+		const callbacks: [HTMLElement, (event: Event) => void][] = []
 
 		// This loop does nothing if webformStates is empty.
 		for (const state of webformStates) {
-			// Selector is jQuery selector. Webform uses ':input' to prefix selectors.
+			// Webform uses jQuery selector that are prefixed with ':input'.
 			// Strip leading ':' and hope it will not break horribly. :)
+			// It will not work with textarea or select...
 			const selector = state.selector.substr(1)
-			const element = document.querySelector(selector) as HTMLInputElement
-			const callback = handleOnChange.bind(state)
+			const element = document.querySelector<HTMLElement>(selector)
 
-			// Compute initial value for each state.
-			initialStates[state.state] = checkConditions(element, state)
+			if (element) {
+				// Compute initial value for each state.
+				initialState[state.state] = checkConditions(element, state.condition)
 
-			// Setup listener for state change.
-			element.addEventListener('change', callback)
+				const callback = handleOnChange.bind(null, state, setStates)
 
-			// Keep track of all elements and their callbacks so they can later be removed.
-			callbacks.push([element, callback])
+				// Setup listener for state change.
+				element.addEventListener('change', callback)
+
+				callbacks.push([element, callback])
+			}
 		}
 
 		// Set calculated initial state.
-		if (Object.entries(initialStates).length > 0) {
-			setStates(initialStates)
+		if (Object.entries(initialState).length > 0) {
+			setStates(initialState)
 		}
 
 		return () => {
@@ -206,9 +127,71 @@ export function useWebformStates(webformStates: WebformState[]) {
 				element.removeEventListener('change', callback)
 			}
 		}
-	}, [...webformStates])
+	}, webformStates)
 
 	return states
+}
+
+/**
+ * Return true if attribute should be spred to <input /> elements.
+ *
+ * @param attribute attribute name
+ */
+function isHTMLAttribute(attribute: string): attribute is typeof HTML_ATTRIBUTE_WHITELIST[number] {
+	// Compare attribute name against whitelist.
+	return HTML_ATTRIBUTE_WHITELIST.includes(attribute as typeof HTML_ATTRIBUTE_WHITELIST[number])
+}
+
+/**
+ * Transform webform attribute name
+ *
+ * @param attribute attribute name
+ */
+function transformAttributeName(attribute: string): string {
+	// Handle special cases in a switch statement.
+	switch (attribute) {
+		case '#readonly':
+			return 'readOnly'
+		case '#default_value':
+			return 'defaultValue'
+		// Remove leading '#':
+		default:
+			return attribute.substr(1)
+	}
+}
+
+/**
+ * Transform WebformElement
+ *
+ * @param element webform element
+ * @param options custom properties
+ */
+export function useWebformElement<T extends {}>(element: WebformElement, options?: T): [InputProps & T, WebformSettings] {
+	const states = useWebformStates(element.states || [])
+
+	const inputProps = {} as InputProps & T
+	const attributes = {} as WebformSettings['attributes']
+
+	/**
+	 * This will parse webform attributes and return object containing
+	 * the props that you can spread over the <input /> element and other
+	 * unrecognized attributes.
+	 */
+	element.attributes.forEach(attribute => {
+		const transformedAttribute = transformAttributeName(attribute.name)
+
+		if (isHTMLAttribute(transformedAttribute)) {
+			inputProps[transformedAttribute] = attribute.value
+		}
+
+		attributes[transformedAttribute] = attribute.value
+	})
+
+	if (options) {
+		Object.assign(inputProps, options)
+	}
+
+	return [inputProps, { attributes, states }]
 }
 
 export function getOptionId(name: string, value: string) {
@@ -240,70 +223,4 @@ export function getAttributeValue(attributeName: string, element: WebformElement
 	}
 
 	return undefined
-}
-
-/**
- * Return true if webform attribute represents html attribute
- *
- * @param attribute
- */
-function isHTMLAttribute(attribute: string): attribute is typeof HTML_ATTRIBUTE_WHITELIST[number] {
-	// Compare attribute name against whitelist.
-	return HTML_ATTRIBUTE_WHITELIST.includes(attribute as typeof HTML_ATTRIBUTE_WHITELIST[number])
-}
-
-/**
- * Transform webform attribute name to input attribute.
- *
- * @param attributeName
- */
-function transformInputProp(attribute: string): string {
-	// Handle special cases in a switch statement.
-	switch (attribute) {
-		case '#readonly':
-			return 'readOnly'
-		case '#default_value':
-			return 'defaultValue'
-		// Generic case remove leading '#':
-		default:
-			return attribute.substr(1)
-	}
-}
-
-type InputProps = { [name in typeof HTML_ATTRIBUTE_WHITELIST[number]]?: any }
-
-/**
- * This function will parse webform attributes and return object containing
- * the props that you can spread over the <input /> element and other
- * unrecognized attributes.
- *
- * You can optionally call the function with an object to pass them props to
- * the input.
- *
- * @param element webform element
- * @param options other props to input
- */
-export function getProps<T extends {}>(element: WebformElement, options?: T) {
-	const inputProps: InputProps = {}
-	const webformAttributes: { [key: string]: string } = {}
-
-	element.attributes.forEach(attribute => {
-		const transformedAttribute = transformInputProp(attribute.name)
-
-		if (isHTMLAttribute(transformedAttribute)) {
-			// Webform attribute names need to be transformed to make them valid html attributes.
-			inputProps[transformedAttribute] = attribute.value
-		} else {
-			webformAttributes[transformedAttribute] = attribute.value
-		}
-	})
-
-	if (options) {
-		Object.assign(inputProps, options)
-	}
-
-	return {
-		inputProps: inputProps as InputProps & T,
-		webformAttributes
-	}
 }

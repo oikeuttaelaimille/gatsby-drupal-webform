@@ -2,7 +2,7 @@ import React, { useState, FormEvent } from 'react'
 import axios from 'axios'
 import { graphql } from 'gatsby'
 
-import { formToJSON, getAttributeValue } from './utils'
+import { getAttributeValue, formToJSON } from './utils'
 import { WebformDebug, WebformInput, WebformSelect, WebformTextarea, WebformCheckbox, WebformCheckboxGroup } from './components'
 
 export const DEFAULT_SUBMIT_LABEL = 'Submit'
@@ -17,35 +17,9 @@ export interface WebformObject {
 	elements: WebformElement[]
 }
 
-export type WebformOption = {
-	label: string
-	value: string
-}
-
-export interface WebformStateCondition {
-	[key: string]: boolean | string | null
-}
-
-/**
- * Webform drupal form api states.
- */
-export type WebformState = {
-	state: string
-	selector: string
-	condition: WebformStateCondition
-}
-
-/**
- * Webform element attribute.
- */
-export type WebformAttribute = {
-	name: string
-	value: string
-}
-
-/** This stores information about WebformState internally */
-export type WebformElementStates = {
-	[key: string]: boolean
+export type WebformSettings = {
+	attributes: { [key: string]: string }
+	states: { [key: string]: boolean }
 }
 
 /**
@@ -54,9 +28,21 @@ export type WebformElementStates = {
 export type WebformElement = {
 	name: string
 	type: string
-	options?: WebformOption[]
-	attributes: WebformAttribute[]
-	states?: WebformState[]
+	attributes: Array<{
+		name: string
+		value: string
+	}>
+	options?: Array<{
+		label: string
+		value: string
+	}>
+	states?: Array<{
+		state: string
+		selector: string
+		condition: {
+			[key: string]: boolean | string | null
+		}
+	}>
 }
 
 export type WebformCustomComponentProps = {
@@ -89,7 +75,7 @@ export class WebformError extends Error {
 }
 
 /**
- * Element errors returned by Drupal.
+ * Errors returned by Drupal.
  */
 type WebformErrors = {
 	[name: string]: string
@@ -261,8 +247,11 @@ Webform.defaultProps = {
 
 export default Webform
 
+/**
+ * @deprecated I'm going to remove dependency to Gatsby in later versions.
+ */
 export const query = graphql`
-	fragment WebformSimple on webform__webform {
+	fragment SimpleWebform on webform__webform {
 		drupal_internal__id
 		elements {
 			name
