@@ -1,0 +1,10 @@
+{
+	"name": "drupal/gatsby_webform_testing",
+	"description": "Gatsby webform testing",
+	"type": "drupal-module",
+	"license": "MIT",
+	"require" : {
+	  "drupal/core": "~8.0",
+	  "drupal/gatsby_webform": "@dev"
+	}
+  }

@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
 
-context('Actions', () => {
+context('Contact form', () => {
 	beforeEach(() => {
 		cy.visit('/contact')
 		cy.server()
@@ -26,7 +26,7 @@ context('Actions', () => {
 
 			cy.get('#webform')
 				.next()
-				.should('contain', 'Message sent!')
+				.should('contain', 'Form submitted!')
 		})
 	})
 })

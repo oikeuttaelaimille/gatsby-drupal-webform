@@ -1,0 +1,28 @@
+<?php
+
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * @file
+ * Create dummy content for testing.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function gatsby_webform_testing_install() {
+	Term::create([
+		'vid' => 'tags',
+		'name' => 'Foo',
+	])->save();
+
+	Term::create([
+		'vid' => 'tags',
+		'name' => 'Bar',
+	])->save();
+
+	Term::create([
+		'vid' => 'tags',
+		'name' => 'Foobar',
+	])->save();
+}

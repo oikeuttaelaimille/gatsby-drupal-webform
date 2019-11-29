@@ -4,6 +4,8 @@ import { graphql } from 'gatsby'
 
 import Webform from 'gatsby-drupal-webform'
 
+import WebformEntityRadios from '../components/WebformEntityRadios'
+
 const IndexPage = props => {
 	const [submitted, setSubmitted] = useState(false)
 
@@ -17,12 +19,15 @@ const IndexPage = props => {
 				id="webform"
 				webform={props.data.webformWebform}
 				endpoint="http://localhost:8000/gatsby_webform/submit"
+				customComponents={{
+					webform_entity_radios: WebformEntityRadios
+				}}
 				onSuccess={() => {
 					setSubmitted(true)
 				}}
 			/>
 
-			{submitted && <h2>Message sent!</h2>}
+			{submitted && <h2>Form submitted!</h2>}
 		</div>
 	)
 }
