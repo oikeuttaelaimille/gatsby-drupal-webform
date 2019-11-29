@@ -6,11 +6,11 @@
   "author": "Santeri Hurnanen <santeri.hurnanen@oikeuttaelaimille.fi>",
   "dependencies": {
     "axios": "^0.19.0",
-    "gatsby": "^2.17.7",
+    "gatsby": "^2.18.5",
     "gatsby-drupal-webform": "../../gatsby-drupal-webform.tgz",
-    "gatsby-source-drupal": "^3.3.3",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0"
+    "gatsby-source-drupal": "^3.3.8",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
   },
   "keywords": [
     "gatsby"
@@ -34,7 +34,7 @@
     "url": "https://github.com/oikeuttaelaimille/gatsby-drupal-webform/issues"
   },
   "devDependencies": {
-    "cypress": "^3.6.0",
+    "cypress": "^3.7.0",
     "start-server-and-test": "^1.10.6"
   }
 }
