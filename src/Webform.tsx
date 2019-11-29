@@ -2,8 +2,10 @@ import React, { useState, FormEvent } from 'react'
 import axios from 'axios'
 import { graphql } from 'gatsby'
 
-import { formToJSON } from './utils'
-import { renderWebformElement, DEFAULT_SUBMIT_LABEL } from './webformRender'
+import { formToJSON, getAttributeValue } from './utils'
+import { WebformDebug, WebformInput, WebformSelect, WebformTextarea, WebformCheckbox, WebformCheckboxGroup } from './components'
+
+export const DEFAULT_SUBMIT_LABEL = 'Submit'
 
 /**
  * Webform object as returned from GraphQL query.
@@ -39,6 +41,11 @@ export type WebformState = {
 export type WebformAttribute = {
 	name: string
 	value: string
+}
+
+/** This stores information about WebformState internally */
+export type WebformElementStates = {
+	[key: string]: boolean
 }
 
 /**
@@ -112,6 +119,55 @@ interface Props {
 
 	/** Provide custom components that handle specific webform elements. */
 	customComponents: { [name: string]: WebformCustomComponent }
+}
+
+/**
+ * Render single webform element.
+ */
+export function renderWebformElement(element: WebformElement, error?: string, CustomComponent?: WebformCustomComponent) {
+	const customComponentAPI = {
+		error
+	}
+
+	// Render using custom compoennt if provided:
+	if (CustomComponent) {
+		return <CustomComponent element={element} {...customComponentAPI} />
+	}
+
+	// Othervise select renderer based on element type:
+	switch (element.type) {
+		case 'textfield':
+			return <WebformInput element={{ ...element, type: 'text' }} {...customComponentAPI} />
+		case 'textarea':
+			return <WebformTextarea element={element} {...customComponentAPI} />
+		case 'tel':
+		case 'number':
+		case 'email':
+		case 'hidden':
+			return <WebformInput element={element} {...customComponentAPI} />
+		case 'checkbox':
+		case 'radio':
+			/** Render single checkbox or radio element. */
+			return <WebformCheckbox element={element} {...customComponentAPI} />
+		case 'checkboxes':
+			return <WebformCheckboxGroup element={{ ...element, type: 'checkbox' }} {...customComponentAPI} />
+		case 'radios':
+			return <WebformCheckboxGroup element={{ ...element, type: 'radio' }} {...customComponentAPI} />
+		case 'select':
+			return <WebformSelect element={element} {...customComponentAPI} />
+		case 'processed_text':
+			return <div dangerouslySetInnerHTML={{ __html: getAttributeValue('#text', element) || '' }} />
+		// Submit button
+		case 'webform_actions':
+			return (
+				<div className="form-group">
+					<button type="submit">{getAttributeValue('#submit__label', element) || DEFAULT_SUBMIT_LABEL}</button>
+				</div>
+			)
+		// Unknown element type -> render as json string
+		default:
+			return <WebformDebug element={element} error={error} />
+	}
 }
 
 /**
@@ -206,7 +262,7 @@ Webform.defaultProps = {
 export default Webform
 
 export const query = graphql`
-	fragment SimpleWebform on webform__webform {
+	fragment WebformSimple on webform__webform {
 		drupal_internal__id
 		elements {
 			name
