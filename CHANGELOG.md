@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.1.2...v2.2.0) (2019-11-29)
+
+
+### Features
+
+* add useWebformElement and WebformElementWrapper API ([a863262](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/a863262de29acc095b6c9cd985f54f18880f5c74))
+
 ## [2.1.2](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.1.1...v2.1.2) (2019-11-27)
 
 
