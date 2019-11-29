@@ -2,9 +2,7 @@
 
 [![Build Status](https://travis-ci.org/oikeuttaelaimille/gatsby-drupal-webform.svg?branch=master)](https://travis-ci.org/oikeuttaelaimille/gatsby-drupal-webform)
 
-React component for [webforms](https://www.drupal.org/project/webform). Goal of this project is to provide react component that will generate [bootstrap like](https://getbootstrap.com/docs/4.0/components/forms/) HTML from webform YAML configuration for Gatsby websites.
-
-This module is not yet 100% production ready. Use with caution :).
+React component for [webforms](https://www.drupal.org/project/webform). Goal of this project is to have a react component that generates [bootstrap like](https://getbootstrap.com/docs/4.0/components/forms/) HTML from webform YAML configuration.
 
 ### Setup
 
@@ -17,8 +15,8 @@ npm install --save gatsby-drupal-webform
 
 ### Example
 
-* [Gatsby project](./examples/gatsby-webforms)
-* [Drupal project](./examples/drupal)
+* [Gatsby project](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/tree/master/examples/gatsby-webforms)
+* [Drupal project](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/tree/master/examples/drupal)
 
 ```jsx
 import Webfrom from 'gatsby-drupal-webform'
@@ -49,5 +47,7 @@ const query = graphql`
 `
 ```
 
+### Custom components
 
+I'm not sure if it is possible to make generic component for every element webform supports (and I'm trying to keep this project simple). That is why this component tries to be easily extensible with custom element types. See: [WebformEntityRadios](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/tree/master/examples/gatsby-webforms/src/components/WebformEntityRadios.jsx) for an example.
 
