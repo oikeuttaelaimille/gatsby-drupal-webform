@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f12a24489b2275c16f98589ee5fc1050",
+    "content-hash": "ee1d88a6360fabc8360c0011aec1ede9",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2157,6 +2157,25 @@
             "license": [
                 "MIT"
             ]
+        },
+        {
+            "name": "drupal/gatsby_webform_testing",
+            "version": "dev-custom-components",
+            "dist": {
+                "type": "path",
+                "url": "../../modules/gatsby_webform_testing",
+                "reference": "d01f5ee7065ab93abdb0475af5d4c7623c66bebd",
+                "shasum": null
+            },
+            "require": {
+                "drupal/core": "~8.0",
+                "drupal/gatsby_webform": "@dev"
+            },
+            "type": "drupal-module",
+            "license": [
+                "MIT"
+            ],
+            "description": "Gatsby webform testing"
         },
         {
             "name": "drupal/jsonapi_extras",
@@ -8197,7 +8216,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "drupal/gatsby_webform": 20
+        "drupal/gatsby_webform": 20,
+        "drupal/gatsby_webform_testing": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

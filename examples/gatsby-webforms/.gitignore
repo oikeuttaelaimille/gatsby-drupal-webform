@@ -68,6 +68,8 @@ yarn-error.log
 # Yarn Integrity file
 .yarn-integrity
 
+package-lock.json
+
 # Cypress
 cypress/videos
 cypress/screenshots

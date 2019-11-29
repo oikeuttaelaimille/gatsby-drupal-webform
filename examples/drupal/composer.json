@@ -17,6 +17,10 @@
         {
             "type": "path",
             "url": "../../modules/gatsby_webform"
+        },
+        {
+            "type": "path",
+            "url": "../../modules/gatsby_webform_testing"
         }
     ],
     "require": {
@@ -25,6 +29,7 @@
         "drupal-composer/drupal-scaffold": "^2.5",
         "drupal/core": "^8.7.0",
         "drupal/gatsby_webform": "@dev",
+        "drupal/gatsby_webform_testing": "@dev",
         "drush/drush": "^9.0.0",
         "zaporylie/composer-drupal-optimizations": "^1.0"
     },

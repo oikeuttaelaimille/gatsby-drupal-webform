@@ -56,7 +56,7 @@ jobs:
             cd examples/drupal
             composer drupal-scaffold
             ./vendor/bin/drush site-install -y -vvv --db-url='mysql://root@127.0.0.1:3306/circle_test' --account-name='admin' --account-pass='admin'
-            ./vendor/bin/drush en -y gatsby_webform basic_auth
+            ./vendor/bin/drush en -y gatsby_webform gatsby_webform_testing basic_auth
 
       - run:
           name: Configure & start apache

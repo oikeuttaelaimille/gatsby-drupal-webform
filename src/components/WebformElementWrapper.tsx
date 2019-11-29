@@ -61,7 +61,7 @@ const ElementWrapper: React.FC<Props> = ({ children, settings, error, labelFor, 
 
 			{error && (
 				<div className="form-text invalid-feedback" {...props}>
-					{children}
+					{error}
 				</div>
 			)}
 
