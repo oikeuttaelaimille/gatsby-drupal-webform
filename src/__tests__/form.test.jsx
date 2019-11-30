@@ -1,5 +1,5 @@
 import React from 'react'
-import renderer from 'react-test-renderer'
+import { render } from '@testing-library/react'
 
 import Webform from '../Webform'
 
@@ -89,11 +89,9 @@ const webform = {
 
 describe('Webform', () => {
 	it('contact form renders correctly', () => {
-		const tree = renderer
-			.create(<Webform className="my-form" style={{ color: 'black' }} endpoint="/form-submit" webform={webform} />)
-			.toJSON()
+		const { asFragment } = render(<Webform className="my-form" style={{ color: 'black' }} endpoint="/form-submit" webform={webform} />)
 
-		expect(tree).toMatchSnapshot()
+		expect(asFragment()).toMatchSnapshot()
 	})
 
 	it('title attributes', () => {
@@ -117,11 +115,9 @@ describe('Webform', () => {
 			]
 		}
 
-		const tree = renderer
-			.create(<Webform className="my-form" style={{ color: 'black' }} endpoint="/form-submit" webform={webform} />)
-			.toJSON()
+		const { asFragment } = render(<Webform className="my-form" endpoint="/form-submit" webform={webform} />)
 
-		expect(tree).toMatchSnapshot()
+		expect(asFragment()).toMatchSnapshot()
 	})
 
 	it('hidden inputs', () => {
@@ -141,11 +137,8 @@ describe('Webform', () => {
 			]
 		}
 
-		const tree = renderer
-			.create(<Webform className="my-form" style={{ color: 'black' }} endpoint="/form-submit" webform={webform} />)
-			.toJSON()
-
-		expect(tree).toMatchSnapshot()
+		const { asFragment } = render(<Webform className="my-form" endpoint="/form-submit" webform={webform} />)
+		expect(asFragment()).toMatchSnapshot()
 	})
 
 	it('checkboxes', () => {
@@ -189,10 +182,8 @@ describe('Webform', () => {
 			]
 		}
 
-		const tree = renderer
-			.create(<Webform className="my-form" style={{ color: 'black' }} endpoint="/form-submit" webform={webform} />)
-			.toJSON()
+		const { asFragment } = render(<Webform className="my-form" endpoint="/form-submit" webform={webform} />)
 
-		expect(tree).toMatchSnapshot()
+		expect(asFragment()).toMatchSnapshot()
 	})
 })

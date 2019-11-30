@@ -1,0 +1,227 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Webform checkboxes 1`] = `
+<DocumentFragment>
+  <form
+    class="my-form"
+    data-webform-id="contact"
+  >
+    <div
+      class="form-group form-check"
+    >
+      <input
+        class="form-check-input"
+        id="form-tos"
+        name="tos"
+        type="checkbox"
+      />
+      <label
+        class="form-check-label"
+        for="form-tos"
+      >
+        Agree terms of service
+      </label>
+    </div>
+    <div
+      class="form-group"
+    >
+      <label>
+        Select your favourite color
+      </label>
+      <div
+        class="form-check"
+      >
+        <input
+          class="form-check-input"
+          id="form-favourite-color-#ff69b4"
+          name="favourite_color"
+          type="radio"
+          value="#ff69b4"
+        />
+        <label
+          class="form-check-label"
+          for="form-favourite-color-#ff69b4"
+        >
+          Hotpink
+        </label>
+      </div>
+      <div
+        class="form-check"
+      >
+        <input
+          class="form-check-input"
+          id="form-favourite-color-#808000"
+          name="favourite_color"
+          type="radio"
+          value="#808000"
+        />
+        <label
+          class="form-check-label"
+          for="form-favourite-color-#808000"
+        >
+          Olive
+        </label>
+      </div>
+      <div
+        class="form-check"
+      >
+        <input
+          class="form-check-input"
+          id="form-favourite-color-#6495ed"
+          name="favourite_color"
+          type="radio"
+          value="#6495ed"
+        />
+        <label
+          class="form-check-label"
+          for="form-favourite-color-#6495ed"
+        >
+          Cornflower blue
+        </label>
+      </div>
+    </div>
+    <button
+      type="submit"
+    >
+      Submit
+    </button>
+  </form>
+</DocumentFragment>
+`;
+
+exports[`Webform contact form renders correctly 1`] = `
+<DocumentFragment>
+  <form
+    class="my-form"
+    data-webform-id="contact"
+    style="color: black;"
+  >
+    <div
+      class="form-group"
+    >
+      <label
+        for="form-name"
+      >
+        Your Name
+      </label>
+      <input
+        class="form-control"
+        id="form-name"
+        name="name"
+        required=""
+        type="text"
+        value="John"
+      />
+    </div>
+    <div
+      class="form-group"
+    >
+      <label
+        for="form-email"
+      >
+        Your Email
+      </label>
+      <input
+        class="form-control"
+        id="form-email"
+        name="email"
+        required=""
+        type="email"
+        value="john@example.com"
+      />
+    </div>
+    <div
+      class="form-group"
+    >
+      <label
+        for="form-subject"
+      >
+        Subject
+      </label>
+      <input
+        class="form-control"
+        id="form-subject"
+        name="subject"
+        required=""
+        type="email"
+      />
+    </div>
+    <div
+      class="form-group"
+    >
+      <label
+        for="form-message"
+      >
+        Subject
+      </label>
+      <textarea
+        class="form-control"
+        id="form-message"
+        name="message"
+        required=""
+      />
+    </div>
+    <div
+      class="form-group"
+    >
+      <button
+        type="submit"
+      >
+        Send message
+      </button>
+    </div>
+  </form>
+</DocumentFragment>
+`;
+
+exports[`Webform hidden inputs 1`] = `
+<DocumentFragment>
+  <form
+    class="my-form"
+    data-webform-id="contact"
+  >
+    <input
+      class="form-control"
+      id="form-name"
+      name="name"
+      type="hidden"
+    />
+    <button
+      type="submit"
+    >
+      Submit
+    </button>
+  </form>
+</DocumentFragment>
+`;
+
+exports[`Webform title attributes 1`] = `
+<DocumentFragment>
+  <form
+    class="my-form"
+    data-webform-id="contact"
+  >
+    <div
+      class="form-group"
+    >
+      <label
+        for="form-name"
+        style="position: absolute; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); width: 1px; height: 1px; word-wrap: normal;"
+      >
+        Your Name
+      </label>
+      <input
+        class="form-control"
+        id="form-name"
+        name="name"
+        type="text"
+      />
+    </div>
+    <button
+      type="submit"
+    >
+      Submit
+    </button>
+  </form>
+</DocumentFragment>
+`;
