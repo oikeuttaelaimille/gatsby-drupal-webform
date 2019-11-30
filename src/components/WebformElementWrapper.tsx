@@ -5,6 +5,7 @@ import { WebformSettings } from '../Webform'
 interface Props extends React.HTMLProps<HTMLDivElement> {
 	settings: WebformSettings
 	labelFor?: string
+	labelClassName?: string
 	error?: string
 }
 
@@ -38,7 +39,7 @@ export function isElementHidden(states: WebformSettings['states']): boolean {
 	return states.hidden === true || states.visible === false
 }
 
-const ElementWrapper: React.FC<Props> = ({ children, settings, error, labelFor, ...props }) => {
+const ElementWrapper: React.FC<Props> = ({ children, settings, error, labelFor, labelClassName, ...props }) => {
 	const { states, attributes } = settings
 
 	if (states && isElementHidden(states)) {
@@ -46,7 +47,7 @@ const ElementWrapper: React.FC<Props> = ({ children, settings, error, labelFor, 
 	}
 
 	const label = (
-		<label style={getTileStyle(attributes)} htmlFor={labelFor}>
+		<label style={getTileStyle(attributes)} className={labelClassName} htmlFor={labelFor}>
 			{attributes.title}
 		</label>
 	)
