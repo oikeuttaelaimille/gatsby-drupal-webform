@@ -14,6 +14,13 @@ export const WebformCheckbox: WebformCustomComponent = ({ element, error }) => {
 		id
 	})
 
+	/**
+	 * For checkboxes title should be after the checkbox.
+	 * This how I like to make custom checkboxes. :)
+	 * @see https://www.w3schools.com/howto/howto_css_custom_checkbox.asp
+	 */
+	settings.attributes.title_display = 'after'
+
 	return (
 		<WebformElementWrapper className="form-group form-check" settings={settings} error={error} labelFor={id}>
 			<input defaultChecked={!!defaultValue} {...inputProps} />

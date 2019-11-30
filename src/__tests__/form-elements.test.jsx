@@ -147,4 +147,52 @@ describe('Webform', () => {
 
 		expect(tree).toMatchSnapshot()
 	})
+
+	it('checkboxes', () => {
+		const webform = {
+			drupal_internal__id: 'contact',
+			elements: [
+				{
+					name: 'tos',
+					type: 'checkbox',
+					attributes: [
+						{
+							name: '#title',
+							value: 'Agree terms of service'
+						}
+					]
+				},
+				{
+					name: 'favourite_color',
+					type: 'radios',
+					options: [
+						{
+							label: 'Hotpink',
+							value: '#ff69b4'
+						},
+						{
+							label: 'Olive',
+							value: '#808000'
+						},
+						{
+							label: 'Cornflower blue',
+							value: '#6495ed'
+						}
+					],
+					attributes: [
+						{
+							name: '#title',
+							value: 'Select your favourite color'
+						}
+					]
+				}
+			]
+		}
+
+		const tree = renderer
+			.create(<Webform className="my-form" style={{ color: 'black' }} endpoint="/form-submit" webform={webform} />)
+			.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
 })
