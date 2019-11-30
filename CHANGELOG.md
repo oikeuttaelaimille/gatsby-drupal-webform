@@ -1,3 +1,15 @@
+# [2.3.0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.2.2...v2.3.0) (2019-11-30)
+
+
+### Bug Fixes
+
+* required property for inputs should be boolean ([9cd7602](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/9cd7602eadfbfcc398c36cd0d97b21ea7943affa))
+
+
+### Features
+
+* add is-invalid class to WebformElementWrapper has error ([ef33a36](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/ef33a36b35b9474222a576922cf1fcb13d5ca744))
+
 ## [2.2.2](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.2.1...v2.2.2) (2019-11-30)
 
 
