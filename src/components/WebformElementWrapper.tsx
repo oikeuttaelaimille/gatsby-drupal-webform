@@ -52,8 +52,10 @@ const ElementWrapper: React.FC<Props> = ({ children, settings, error, labelFor, 
 		</label>
 	)
 
+	const classNames = ['form-group', error != null && 'is-invalid', props.className].filter(item => typeof item === 'string').join(' ')
+
 	return (
-		<div className="form-group" {...props}>
+		<div {...props} className={classNames}>
 			{getTitleDisplay(attributes) === 'before' && label}
 
 			{children}

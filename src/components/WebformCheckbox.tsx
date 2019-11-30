@@ -22,13 +22,7 @@ export const WebformCheckbox: WebformCustomComponent = ({ element, error }) => {
 	settings.attributes.title_display = 'after'
 
 	return (
-		<WebformElementWrapper
-			settings={settings}
-			error={error}
-			className="form-group form-check"
-			labelClassName="form-check-label"
-			labelFor={id}
-		>
+		<WebformElementWrapper settings={settings} error={error} className="form-check" labelClassName="form-check-label" labelFor={id}>
 			<input defaultChecked={!!defaultValue} {...inputProps} />
 		</WebformElementWrapper>
 	)
