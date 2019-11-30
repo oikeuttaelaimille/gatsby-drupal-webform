@@ -187,7 +187,13 @@ export function useWebformElement<T extends {}>(element: WebformElement, options
 		attributes[transformedAttribute] = attribute.value
 	})
 
+	// Convert inputProps to correct type.
+	Object.assign(inputProps, {
+		required: inputProps.required === 'true'
+	})
+
 	if (options) {
+		// Overwrite inputProps with option props.
 		Object.assign(inputProps, options)
 	}
 
