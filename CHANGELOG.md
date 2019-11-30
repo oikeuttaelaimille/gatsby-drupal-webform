@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.2.1...v2.2.2) (2019-11-30)
+
+
+### Bug Fixes
+
+* invalid checkbox markup again :( ([ddec943](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/ddec94305a5c1da78053a826c749e9f40d081428))
+
 ## [2.2.1](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.2.0...v2.2.1) (2019-11-30)
 
 
