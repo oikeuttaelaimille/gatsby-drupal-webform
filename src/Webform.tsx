@@ -100,8 +100,11 @@ interface Props {
 	 */
 	onSubmit?: WebformSubmitHandler
 
-	/** Form POST endpoint */
+	/** Form POST endpoint. */
 	endpoint: string
+
+	/** Extra data to POST. */
+	extraData?: object
 
 	/** Provide custom components that handle specific webform elements. */
 	customComponents: { [name: string]: WebformCustomComponent }
@@ -189,6 +192,7 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 
 				// Submit form to API.
 				const response = await axios.post(props.endpoint, {
+					...props.extraData,
 					...data,
 					webform_id: webform.drupal_internal__id
 				})
