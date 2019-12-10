@@ -1,3 +1,15 @@
+# [2.4.0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.3.0...v2.4.0) (2019-12-10)
+
+
+### Bug Fixes
+
+* drupal module returns boolean values as integers ([88d23e8](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/88d23e84354bfcd20a9e0925620f86fa16aa77d5))
+
+
+### Features
+
+* allow extra data to be sent with form submit ([5ba7570](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/5ba75706afe957b4b8afc781612a58a8e5a44ada))
+
 # [2.3.0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.2.2...v2.3.0) (2019-11-30)
 
 
