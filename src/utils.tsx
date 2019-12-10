@@ -189,7 +189,7 @@ export function useWebformElement<T extends {}>(element: WebformElement, options
 
 	// Convert inputProps to correct type.
 	Object.assign(inputProps, {
-		required: inputProps.required === 'true'
+		required: inputProps.required === '1' || inputProps.required === 'true'
 	})
 
 	if (options) {
