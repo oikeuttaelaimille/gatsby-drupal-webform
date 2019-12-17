@@ -36,7 +36,7 @@ export function getTitleDisplay(webformAttributes: WebformSettings['attributes']
 }
 
 export function isElementHidden(states: WebformSettings['states']): boolean {
-	return states.hidden === true || states.visible === false
+	return states.invisible === true || states.visible === false
 }
 
 const ElementWrapper: React.FC<Props> = ({ children, settings, error, labelFor, labelClassName, ...props }) => {
