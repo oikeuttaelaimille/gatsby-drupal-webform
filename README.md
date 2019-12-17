@@ -6,8 +6,9 @@ React component for [webforms](https://www.drupal.org/project/webform). Goal of 
 
 ### Setup
 
-* **Install [drupal dependency](./modules/gatsby_webform)**.
-* Enable [CORS](https://www.drupal.org/node/2715637) or serve drupal from same domain as frontend. For development I recommend settings up [Gatsby API proxy](https://www.gatsbyjs.org/docs/api-proxy/) (see [example](./examples/gatsby-webforms/gatsby-config.js#L22-L25)). 
+* **Install [drupal dependency](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/tree/master/modules/gatsby_webform)**.
+* **Give `access any webform configuration` permission to user [accesssing](https://www.gatsbyjs.org/packages/gatsby-source-drupal/#basic-auth) Drupal jsonapi**.
+* Enable [CORS](https://www.drupal.org/node/2715637) or serve drupal from same domain as frontend for submitting to work. For development I recommend settings up [Gatsby API proxy](https://www.gatsbyjs.org/docs/api-proxy/) (see [example](./examples/gatsby-webforms/gatsby-config.js#L22-L25)). 
 
 ```
 npm install --save gatsby-drupal-webform
