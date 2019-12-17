@@ -3,7 +3,15 @@ import axios from 'axios'
 import { graphql } from 'gatsby'
 
 import { getAttributeValue, formToJSON } from './utils'
-import { WebformDebug, WebformInput, WebformSelect, WebformTextarea, WebformCheckbox, WebformCheckboxGroup } from './components'
+import {
+	WebformDebug,
+	WebformInput,
+	WebformSelect,
+	WebformTextarea,
+	WebformCheckbox,
+	WebformCheckboxGroup,
+	WebformText
+} from './components'
 
 export const DEFAULT_SUBMIT_LABEL = 'Submit'
 
@@ -145,7 +153,7 @@ export function renderWebformElement(element: WebformElement, error?: string, Cu
 		case 'select':
 			return <WebformSelect element={element} {...customComponentAPI} />
 		case 'processed_text':
-			return <div dangerouslySetInnerHTML={{ __html: getAttributeValue('#text', element) || '' }} />
+			return <WebformText element={element} {...customComponentAPI} />
 		// Submit button
 		case 'webform_actions':
 			return (
