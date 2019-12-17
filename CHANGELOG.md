@@ -1,3 +1,10 @@
+## [2.4.1](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.4.0...v2.4.1) (2019-12-17)
+
+
+### Bug Fixes
+
+* properly handle states for processed_text elements ([1874c6b](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/1874c6bef0042a8a87f0eb604d7d7344fc508673))
+
 # [2.4.0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.3.0...v2.4.0) (2019-12-10)
 
 
