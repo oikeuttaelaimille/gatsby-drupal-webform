@@ -1,3 +1,10 @@
+## [2.4.2](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.4.1...v2.4.2) (2019-12-17)
+
+
+### Bug Fixes
+
+* fix invisible state not hiding elements ([ad9dbb3](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/ad9dbb303df8d59e2fa19ccd43fc1437841fc69a))
+
 ## [2.4.1](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.4.0...v2.4.1) (2019-12-17)
 
 
