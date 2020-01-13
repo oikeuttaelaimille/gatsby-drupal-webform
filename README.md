@@ -6,9 +6,10 @@ React component for [webforms](https://www.drupal.org/project/webform). Goal of 
 
 ### Setup
 
-* **Install [drupal dependency](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/tree/master/modules/gatsby_webform)**.
+* **Install [drupal dependency](https://www.drupal.org/project/react_webform_backend)**.
+* Enable REST resource "Webform Submit".
 * **Give `access any webform configuration` permission to user [accesssing](https://www.gatsbyjs.org/packages/gatsby-source-drupal/#basic-auth) Drupal jsonapi**.
-* Enable [CORS](https://www.drupal.org/node/2715637) or serve drupal from same domain as frontend for submitting to work. For development I recommend settings up [Gatsby API proxy](https://www.gatsbyjs.org/docs/api-proxy/) (see [example](./examples/gatsby-webforms/gatsby-config.js#L22-L25)). 
+* If your frontend is hosted on a different domain make sure browser has cross origin access to REST resource.
 
 ```
 npm install --save gatsby-drupal-webform
@@ -22,10 +23,12 @@ npm install --save gatsby-drupal-webform
 ```jsx
 import Webfrom from 'gatsby-drupal-webform'
 
+import { navigate } from 'gatsby'
+
 const ContactForm = ({ data: { webformWebform: webform } }) => (
 	<Webform
 		webform={webform}
-		endpoint="/gatsby_webform/submit"
+		endpoint="http://localhost:8888/react_webform_backend/submit"
 		onSuccess={(response) => navigate(response.settings.confirmation_url)}
 	/>
 )
@@ -50,5 +53,59 @@ const query = graphql`
 
 ### Custom components
 
-I'm not sure if it is possible to make generic component for every element webform supports (and I'm trying to keep this project simple). That is why this component tries to be easily extensible with custom element types. See: [WebformEntityRadios](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/tree/master/examples/gatsby-webforms/src/components/WebformEntityRadios.jsx) for an example.
+This module only provides basic components (textfield, number, textarea etc.) out of the box. More advanced webform components or composite components should be built as custom components. See: [WebformEntityRadios](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/tree/master/examples/gatsby-webforms/src/components/WebformEntityRadios.jsx) for an example.
+
+```jsx
+import React from 'react'
+import { useStaticQuery, graphql } from 'gatsby'
+import { useWebformElement, WebformElementWrapper } from 'gatsby-drupal-webform'
+
+const WebformEntityRadios = ({ element, error }) => {
+	const {
+		allTaxonomyTermTags: { nodes: tags }
+	} = useStaticQuery(graphql`
+		{
+			allTaxonomyTermTags {
+				nodes {
+					drupal_internal__tid
+					name
+				}
+			}
+		}
+	`)
+
+	const [inputProps, settings] = useWebformElement(element, {
+		name: element.name,
+		type: 'radio'
+	})
+
+	return (
+		<WebformElementWrapper settings={settings} error={error}>
+			{tags.map(({ drupal_internal__tid: tid, name }) => (
+				<div className="form-check" key={tid}>
+					<inputid={`tags-${tid}`} className="form-check" defaultChecked={parseInt(inputProps.defaultValue, 10) === tid} {...inputProps} />
+					<label htmlFor={`tags-${tid}`} className="form-check-radio">
+						{name}
+					</label>
+				</div>
+			))}
+		</WebformElementWrapper>
+	)
+}
+
+const SelectTagForm = () => (
+	<Webform
+		id="webform"
+		webform={props.data.webformWebform}
+		endpoint={config.env.ENDPOINT}
+		customComponents={{
+			webform_entity_radios: WebformEntityRadios
+		}}
+		onSuccess={() => {
+			setSubmitted(true)
+		}}
+	/>
+)
+
+```
 
