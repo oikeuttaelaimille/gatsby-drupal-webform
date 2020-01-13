@@ -5,6 +5,7 @@ import { graphql } from 'gatsby'
 import Webform from 'gatsby-drupal-webform'
 
 import WebformEntityRadios from '../components/WebformEntityRadios'
+import config from '../../cypress.json'
 
 const IndexPage = props => {
 	const [submitted, setSubmitted] = useState(false)
@@ -18,7 +19,7 @@ const IndexPage = props => {
 			<Webform
 				id="webform"
 				webform={props.data.webformWebform}
-				endpoint="http://localhost:8000/gatsby_webform/submit"
+				endpoint={config.env.ENDPOINT}
 				customComponents={{
 					webform_entity_radios: WebformEntityRadios
 				}}

@@ -1,6 +1,6 @@
 {
 	"baseUrl": "http://localhost:8000/",
 	"env": {
-		"ENDPOINT": "/gatsby_webform/submit"
+		"ENDPOINT": "http://localhost:8888/react_webform_backend/submit"
 	}
 }

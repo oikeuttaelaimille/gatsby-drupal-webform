@@ -13,14 +13,6 @@
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
-        },
-        {
-            "type": "path",
-            "url": "../../modules/gatsby_webform"
-        },
-        {
-            "type": "path",
-            "url": "../../modules/gatsby_webform_testing"
         }
     ],
     "require": {
@@ -28,8 +20,7 @@
         "composer/installers": "^1.2",
         "drupal-composer/drupal-scaffold": "^2.5",
         "drupal/core": "^8.7.0",
-        "drupal/gatsby_webform": "@dev",
-        "drupal/gatsby_webform_testing": "@dev",
+        "drupal/react_webform_backend": "^1.0@beta",
         "drush/drush": "^9.0.0",
         "zaporylie/composer-drupal-optimizations": "^1.0"
     },

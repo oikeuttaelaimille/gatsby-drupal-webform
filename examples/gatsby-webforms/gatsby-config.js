@@ -1,5 +1,4 @@
-// Use localhost:8888 (=drush runserver url) if not started in CI environment.
-const DRUPAL_URL = process.env.CI ? 'http://drupal.test' : 'http://localhost:8888'
+const DRUPAL_URL = 'http://localhost:8888'
 
 module.exports = {
 	siteMetadata: {
@@ -17,10 +16,5 @@ module.exports = {
 				}
 			}
 		}
-	],
-	// Proxy api requests
-	proxy: {
-		prefix: '/gatsby_webform',
-		url: DRUPAL_URL
-	}
+	]
 }
