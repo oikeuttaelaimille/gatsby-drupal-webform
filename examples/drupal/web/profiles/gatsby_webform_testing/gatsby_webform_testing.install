@@ -1,0 +1,47 @@
+<?php
+
+use Drupal\taxonomy\Entity\Term;
+use Drupal\user\Entity\Role;
+use Drupal\user\Entity\User;
+
+/**
+ * @file
+ * Create dummy content for testing.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function gatsby_webform_testing_install() {
+	// Enable the admin theme.
+	\Drupal::configFactory()->getEditable('system.theme')->set('default', 'claro')->save();
+	\Drupal::configFactory()->getEditable('system.theme')->set('admin', 'claro')->save();
+
+	// Assign user 1 the "administrator" role.
+	$user = User::load(1);
+	$user->roles[] = 'administrator';
+	$user->save();
+
+	Role::load('anonymous')
+		->grantPermission('restful post react_webform_backend')
+		->save();
+
+	Role::load('authenticated')
+		->grantPermission('restful post react_webform_backend')
+		->save();
+
+	Term::create([
+		'vid' => 'tags',
+		'name' => 'Foo',
+	])->save();
+
+	Term::create([
+		'vid' => 'tags',
+		'name' => 'Bar',
+	])->save();
+
+	Term::create([
+		'vid' => 'tags',
+		'name' => 'Foobar',
+	])->save();
+}

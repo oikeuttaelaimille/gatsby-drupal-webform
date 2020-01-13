@@ -19,22 +19,6 @@ jobs:
     steps:
       - checkout
 
-      - npm-install
-      - run:
-          name: Run NPM tests
-          command: |
-            npm run build
-            npm run test
-
-      - run:
-          name: Execute Chrome in Background
-          command: google-chrome-stable --headless --no-default-browser-check --no-first-run --disable-translate --remote-debugging-port=9222 --disable-gpu
-          background: true
-
-      - run:
-          name: Wait for database connection
-          command: dockerize -wait tcp://localhost:3306 -timeout 1m
-
       #
       # Setup drupal
       #
@@ -50,33 +34,48 @@ jobs:
       - run: sudo composer self-update
       - composer-install:
           working-dir: examples/drupal
+
+      - run:
+          name: Wait for database connection
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
+
       - run:
           name: Install drupal
           command: |
             cd examples/drupal
             composer drupal-scaffold
-            ./vendor/bin/drush site-install -y -vvv --db-url='mysql://root@127.0.0.1:3306/circle_test' --account-name='admin' --account-pass='admin'
-            ./vendor/bin/drush en -y gatsby_webform gatsby_webform_testing basic_auth
+            ./vendor/bin/drush site-install gatsby_webform_testing -y -vvv --db-url='mysql://root@127.0.0.1:3306/circle_test' --account-name='admin' --account-pass='admin'
 
       - run:
           name: Configure & start apache
           command: |
-            echo '127.0.0.1 drupal.test' | sudo tee --append /etc/hosts
             sudo cp .circleci/vhosts.conf /etc/apache2/sites-available/000-default.conf
             sudo a2enmod rewrite
             sudo a2enmod headers
             sudo a2ensite 000-default
             sudo service apache2 restart
-       
+
       - run:
           name: Curl drupal site
-          command: curl http://drupal.test/
+          command: curl http://localhost:8888/
+
+      - npm-install
+      - run:
+          name: Run NPM tests
+          command: |
+            npm run build
+            npm run test
 
       - run:
           name: Package library
           command: |
             npm pack
             mv ./$(jq -r '.name + "-" + .version + ".tgz"' package.json) ./gatsby-drupal-webform.tgz
+
+      - run:
+          name: Execute Chrome in Background
+          command: google-chrome-stable --headless --no-default-browser-check --no-first-run --disable-translate --remote-debugging-port=9222 --disable-gpu
+          background: true
 
       - run: npm install --prefix examples/gatsby-webforms
       - run:
@@ -86,7 +85,7 @@ jobs:
       - run: 
           name: Release
           command: npx semantic-release
-         
+
       - store_artifacts:
           path: examples/gatsby-webforms/cypress/videos
       - store_artifacts:

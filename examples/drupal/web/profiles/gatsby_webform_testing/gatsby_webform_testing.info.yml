@@ -1,0 +1,38 @@
+name: 'Gatsby webform testing'
+description: 'Dummy content for testing gatsby webform'
+core: 8.x
+type: profile
+version: '8.x-1.0'
+
+dependencies:
+  - node
+  - block
+  - ckeditor
+  - color
+  - config
+  - contextual
+  - menu_link_content
+  - datetime
+  - block_content
+  - editor
+  - image
+  - menu_ui
+  - options
+  - path
+  - page_cache
+  - dynamic_page_cache
+  - taxonomy
+  - shortcut
+  - toolbar
+  - field_ui
+  - file
+  - views
+  - views_ui
+  - automated_cron
+  - react_webform_backend
+  - webform
+  # Basic auth module is required so that gatsby can authenticate as a user.
+  - basic_auth
+
+themes:
+  - claro
