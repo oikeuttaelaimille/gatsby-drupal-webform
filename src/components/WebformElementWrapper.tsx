@@ -39,23 +39,31 @@ export function isElementHidden(states: WebformSettings['states']): boolean {
 	return states.invisible === true || states.visible === false
 }
 
+function classNames(list: Array<undefined | false | string>) {
+	const className = list.filter(item => typeof item === 'string').join(' ')
+
+	return className.length > 0 ? className : undefined
+}
+
 const ElementWrapper: React.FC<Props> = ({ children, settings, error, labelFor, labelClassName, ...props }) => {
 	const { states, attributes } = settings
+
+	const wrapperClassNames = classNames(['form-group', error != null && 'is-invalid', props.className, attributes.wrapper_class])
+	// todo: pass required prop here and add css class 'required' etc. to label.
+	const labelClassNames = classNames([labelClassName, attributes.label_class])
 
 	if (states && isElementHidden(states)) {
 		return <></>
 	}
 
 	const label = (
-		<label style={getTileStyle(attributes)} className={labelClassName} htmlFor={labelFor}>
+		<label style={getTileStyle(attributes)} className={labelClassNames} htmlFor={labelFor}>
 			{attributes.title}
 		</label>
 	)
 
-	const classNames = ['form-group', error != null && 'is-invalid', props.className].filter(item => typeof item === 'string').join(' ')
-
 	return (
-		<div {...props} className={classNames}>
+		<div {...props} className={wrapperClassNames}>
 			{getTitleDisplay(attributes) === 'before' && label}
 
 			{children}
