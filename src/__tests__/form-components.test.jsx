@@ -28,7 +28,7 @@ describe('Element wrapper', () => {
 		const TestComponent = () => {
 			const [, settings] = useWebformElement(element, {})
 
-			return <WebformElementWrapper settings={settings} error={undefined} className="custom-class" />
+			return <WebformElementWrapper settings={settings} error={undefined} />
 		}
 
 		const { container, queryByText } = render(<TestComponent />)
@@ -38,7 +38,6 @@ describe('Element wrapper', () => {
 
 		// Should have css class when error parameter is defined.
 		expect(container.firstChild.classList.contains('form-group')).toBe(true)
-		expect(container.firstChild.classList.contains('custom-class')).toBe(true)
 	})
 
 	it('error messages render correctly', () => {
@@ -75,5 +74,59 @@ describe('Element wrapper', () => {
 
 		// Should have css class when error parameter is defined.
 		expect(container.firstChild.classList.contains('is-invalid')).toBe(true)
+	})
+
+	it('element wrapper class attributes render correctly', () => {
+		const element = {
+			type: 'number',
+			name: 'amount',
+			attributes: [
+				{
+					name: '#title',
+					value: 'Test number'
+				},
+				{
+					name: '#class',
+					value: 'my-element-class'
+				},
+				{
+					name: '#placeholder',
+					value: 'Your favourite number'
+				},
+				{
+					name: '#label_class',
+					value: 'my-label-class'
+				},
+				{
+					name: '#wrapper_class',
+					value: 'my-wrapper-class'
+				}
+			]
+		}
+
+		const TestComponent = () => {
+			const [, settings] = useWebformElement(element, {})
+
+			return <WebformElementWrapper settings={settings} error={undefined} className="custom-class" />
+		}
+
+		const { container, queryByText } = render(<TestComponent />)
+
+		// query* functions will return the element or null if it cannot be found
+		const labelElement = queryByText('Test number')
+		// const inputElement = queryByPlaceholderText('Your favourite number')
+
+		// query* functions will return the element or null if it cannot be found
+		expect(labelElement).not.toBeNull()
+		expect(labelElement.classList.contains('my-label-class')).toBe(true)
+
+		// Input in not rendered in this test
+		// expect(inputElement).not.toBeNull()
+		// expect(inputElement.classList.contains('form-control my-element-class')).toBe(true)
+
+		// Should have css class when error parameter is defined.
+		expect(container.firstChild.classList.contains('form-group')).toBe(true)
+		expect(container.firstChild.classList.contains('custom-class')).toBe(true)
+		expect(container.firstChild.classList.contains('my-wrapper-class')).toBe(true)
 	})
 })
