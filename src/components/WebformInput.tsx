@@ -6,6 +6,7 @@ import { getElementId, useWebformElement } from '../utils'
 import WebformElementWrapper from './WebformElementWrapper'
 
 export const WebformInput: WebformCustomComponent = ({ element, error }) => {
+	// todo: Maybe id attributes and settings should be generated one lever higher = less boilerplate.
 	const id = getElementId(element.name)
 	const [inputProps, settings] = useWebformElement(element, {
 		className: 'form-control',
