@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.4.2...v2.5.0) (2020-02-04)
+
+
+### Features
+
+* support drupal wrapper and label css classes ([b2440c8](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/b2440c83e83977152618df8e8fcee9bf833a7932))
+
 ## [2.4.2](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.4.1...v2.4.2) (2019-12-17)
 
 
