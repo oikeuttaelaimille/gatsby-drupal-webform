@@ -201,7 +201,7 @@ export function useWebformElement<T extends {}>(element: WebformElement, options
 }
 
 export function getOptionId(name: string, value: string) {
-	return `form-${name.replace('_', '-')}-${value.toLowerCase().replace('_', '-')}`
+	return `form-${name}-${value.toLowerCase()}`.replace(/[_\s]/g, '-')
 }
 
 /**
@@ -210,7 +210,7 @@ export function getOptionId(name: string, value: string) {
  * @param name element name
  */
 export function getElementId(name: string) {
-	return `form-${name.replace('_', '-')}`
+	return `form-${name}`.replace(/[_\s]/g, '-')
 }
 
 /**
