@@ -15,16 +15,17 @@ type State = Exclude<WebformElement['states'], undefined>[number]
 export { formToJSON }
 
 /**
- * Check if form state conditions are true.
+ * Check if form element passes webform state conditions.
  *
  * @param element controlling element
- * @param state webform state
+ * @param conditions webform conditions
  *
  * @return true if element passes all conditions
  */
-function checkConditions(element: Element, conditions: State['condition']): boolean {
+function checkConditions(element: HTMLInputElement, conditions: State['condition']): boolean {
 	return Object.entries(conditions).every(([condition, value]) => {
-		// Ignore conditions that are not defined for this state.
+		// Value might be null if this condition is not defined for this state.
+		// Return true indicates this condition is ignored.
 		if (value == null) {
 			return true
 		}
@@ -32,17 +33,44 @@ function checkConditions(element: Element, conditions: State['condition']): bool
 		// Check condition:
 		switch (condition) {
 			case 'checked':
-				return (element as HTMLInputElement).checked === true
+				return element.checked === true
 			case 'unchecked':
-				return (element as HTMLInputElement).checked === false
+				return element.checked === false
 			case 'empty':
-				return (element as HTMLInputElement).value === ''
+				return element.value === ''
 			case 'filled':
-				return (element as HTMLInputElement).value !== ''
+				return element.value !== ''
+			case 'value':
+				if (element.type === 'checkbox' || element.type === 'radio') {
+					return element.value === value && element.checked
+				}
+
+				return element.value === value
 			default:
 				return false
 		}
 	})
+}
+
+/**
+ * Check if group of form element passes webform state conditions.
+ *
+ * @param element controlling elements
+ * @param conditions webform conditions
+ *
+ * @return true if any element in the group passes all conditions
+ */
+function checkGroupConditions(elements: NodeListOf<HTMLInputElement>, conditions: State['condition']): boolean {
+	for (let i = 0; i < elements.length; ++i) {
+		const element = elements[i]
+
+		// Return true if any element passes all conditions.
+		if (checkConditions(element, conditions)) {
+			return true
+		}
+	}
+
+	return false
 }
 
 /**
@@ -63,6 +91,7 @@ function guessInitialState(states: State[]) {
 		switch (state.state) {
 			case 'invisible':
 				initialState[state.state] = true
+				break
 			case 'visible':
 			default:
 				initialState[state.state] = false
@@ -77,17 +106,17 @@ type UseStateCallback = (value: React.SetStateAction<{}>) => void
 
 function handleOnChange(state: State, setState: UseStateCallback, event: Event) {
 	const { state: stateName, condition } = state
-	const element = event.currentTarget as Element
+	const element = event.currentTarget
 
 	setState(prevState => ({
 		...prevState,
 
-		[stateName]: checkConditions(element, condition)
+		[stateName]: checkConditions(element as HTMLInputElement, condition)
 	}))
 }
 
 function useWebformStates(webformStates: State[]) {
-	const [states, setStates] = useState(guessInitialState(webformStates))
+	const [states, setStates] = useState(() => guessInitialState(webformStates))
 
 	useEffect(() => {
 		const initialState: typeof states = {}
@@ -97,23 +126,26 @@ function useWebformStates(webformStates: State[]) {
 
 		// This loop does nothing if webformStates is empty.
 		for (const state of webformStates) {
-			// Webform uses jQuery selector that are prefixed with ':input'.
-			// Strip leading ':' and hope it will not break horribly. :)
-			// It will not work with textarea or select...
+			// Webform uses jQuery selector syntax. The selector is prefixed with ':input'.
+			// Strip leading ':' and hope this will not break horribly. :)
+			//
+			// This does not work with textarea or select elements...
+			//
+			// https://api.jquery.com/input-selector/
 			const selector = state.selector.substr(1)
-			const element = document.querySelector<HTMLElement>(selector)
+			const elements = document.querySelectorAll<HTMLInputElement>(selector)
 
-			if (element) {
-				// Compute initial value for each state.
-				initialState[state.state] = checkConditions(element, state.condition)
+			// Compute initial value for each state.
+			initialState[state.state] = checkGroupConditions(elements, state.condition)
 
+			// Setup listener for state change.
+			elements.forEach(element => {
 				const callback = handleOnChange.bind(null, state, setStates)
 
-				// Setup listener for state change.
 				element.addEventListener('change', callback)
 
 				callbacks.push([element, callback])
-			}
+			})
 		}
 
 		// Set calculated initial state.
