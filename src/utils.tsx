@@ -52,7 +52,7 @@ function checkConditions(element: Element, conditions: State['condition']): bool
  * reduce flickering and elements jumping around.
  *
  * Guesses:
- *  - If hidden|visible states are present assume they are used to initally hide.
+ *  - If invisible|visible states are present assume they are used to initally hide.
  *
  * @param states
  */
@@ -61,7 +61,7 @@ function guessInitialState(states: State[]) {
 
 	for (const state of states) {
 		switch (state.state) {
-			case 'hidden':
+			case 'invisible':
 				initialState[state.state] = true
 			case 'visible':
 			default:
