@@ -46,6 +46,18 @@ export const pageQuery = graphql`
 					name
 					value
 				}
+				options {
+					label
+					value
+				}
+				states {
+					state
+					selector
+					condition {
+						unchecked
+						value
+					}
+				}
 			}
 		}
 	}
