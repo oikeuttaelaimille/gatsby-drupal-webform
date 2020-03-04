@@ -1,3 +1,16 @@
+# [2.6.0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.5.0...v2.6.0) (2020-03-04)
+
+
+### Bug Fixes
+
+* guessInitialState() state name 'hidden' does not exists ([b7aa14b](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/b7aa14bdd76f49a57584ed69c34998cbdcf67323))
+* small fix for id attribute generation ([779a19d](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/779a19d9c3dcdbbe9364c0e00d98321a983653dd))
+
+
+### Features
+
+* add state support for checkbox and radio group elements ([967c0d3](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/967c0d348af53a55508ca52a2ff288373002c0ca))
+
 # [2.5.0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.4.2...v2.5.0) (2020-02-04)
 
 

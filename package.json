@@ -1,6 +1,6 @@
 {
   "name": "gatsby-drupal-webform",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "React component for Drupal webforms",
   "author": "Santeri Hurnanen <santeri@oikeuttaelaimille.fi>",
   "license": "MIT",
