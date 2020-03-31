@@ -14,6 +14,7 @@ exports[`Webform checkboxes 1`] = `
         id="form-tos"
         name="tos"
         type="checkbox"
+        value="1"
       />
       <label
         class="form-check-label"
