@@ -1,3 +1,10 @@
+## [2.6.1](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.6.0...v2.6.1) (2020-03-31)
+
+
+### Bug Fixes
+
+* single checkbox serialization ([e2b8c1f](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/e2b8c1f4edcd2e0baf7142b6241bdc60ca5d0b60))
+
 # [2.6.0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.5.0...v2.6.0) (2020-03-04)
 
 
