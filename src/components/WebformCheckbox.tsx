@@ -11,6 +11,8 @@ export const WebformCheckbox: WebformCustomComponent = ({ element, error }) => {
 		className: 'form-check-input',
 		name: element.name,
 		type: element.type,
+		// Single checkbox value should be '1'
+		value: '1',
 		id
 	})
 

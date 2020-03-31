@@ -191,6 +191,18 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 			// Serialize form data.
 			const data = formToJSON(target.elements)
 
+			// Post process serialized data:
+			// Some webform elements require specialized data formatting.
+			for (const element of webform.elements) {
+				if (data[element.name]) {
+					switch (element.type) {
+						case 'checkbox':
+							data[element.name] = data[element.name][0]
+							break
+					}
+				}
+			}
+
 			try {
 				// If onSubmit returns false skip submitting to API.
 				if (props.onSubmit && (await props.onSubmit(data, event)) === false) {
