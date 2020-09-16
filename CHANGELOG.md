@@ -1,3 +1,10 @@
+## [2.6.2](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.6.1...v2.6.2) (2020-09-16)
+
+
+### Bug Fixes
+
+* crash on Samsung Internet < 8.0 ([c323332](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/c3233329eccb4794d8e58cdc2833b293db6a9e72))
+
 ## [2.6.1](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.6.0...v2.6.1) (2020-03-31)
 
 
