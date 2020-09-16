@@ -173,7 +173,7 @@ export function renderWebformElement(element: WebformElement, error?: string, Cu
 const Webform = ({ webform, customComponents, ...props }: Props) => {
 	const [errors, setErrors] = useState<WebformErrors>({})
 
-	const submitHandler: React.FormEventHandler<HTMLFormElement> = async event => {
+	const submitHandler: React.FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault()
 
 		const target = event.currentTarget
@@ -206,7 +206,8 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 			try {
 				// If onSubmit returns false skip submitting to API.
 				if (props.onSubmit && (await props.onSubmit(data, event)) === false) {
-					target.classList.replace('form-submitting', 'form-submitted')
+					target.classList.remove('form-submitting')
+					target.classList.add('form-submitted')
 					return
 				}
 
@@ -222,7 +223,8 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 				}
 
 				// Convey current form state.
-				target.classList.replace('form-submitting', 'form-submitted')
+				target.classList.remove('form-submitting')
+				target.classList.add('form-submitted')
 				props.onSuccess && props.onSuccess(response.data, event)
 			} catch (err) {
 				// API should return error structure if validation fails.
@@ -232,7 +234,8 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 				}
 
 				// Convey current form state.
-				target.classList.replace('form-submitting', 'form-error')
+				target.classList.remove('form-submitting')
+				target.classList.add('form-error')
 				props.onError && props.onError(err, event)
 			}
 		} else {
@@ -251,14 +254,14 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 			data-webform-id={webform.drupal_internal__id}
 		>
 			{/* Render webform elements */}
-			{webform.elements.map(element => (
+			{webform.elements.map((element) => (
 				<React.Fragment key={element.name}>
 					{renderWebformElement(element, errors[element.name], customComponents![element.type])}
 				</React.Fragment>
 			))}
 
 			{/* Render default submit button if it is not defined in elements array. */}
-			{webform.elements.find(element => element.type === 'webform_actions') === undefined && (
+			{webform.elements.find((element) => element.type === 'webform_actions') === undefined && (
 				<button type="submit">{DEFAULT_SUBMIT_LABEL}</button>
 			)}
 		</form>
