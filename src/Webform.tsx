@@ -152,7 +152,8 @@ export function renderWebformElement(element: WebformElement, error?: string, Cu
 			return <WebformCheckboxGroup element={{ ...element, type: 'radio' }} {...customComponentAPI} />
 		case 'select':
 			return <WebformSelect element={element} {...customComponentAPI} />
-		case 'processed_text':
+			case 'webform_markup':
+			case 'processed_text':
 			return <WebformText element={element} {...customComponentAPI} />
 		// Submit button
 		case 'webform_actions':

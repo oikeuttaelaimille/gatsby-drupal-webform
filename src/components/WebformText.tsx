@@ -10,7 +10,7 @@ export const WebformText: WebformCustomComponent = ({ element, error }) => {
 
 	return (
 		<WebformElementWrapper settings={settings} error={error}>
-			<div dangerouslySetInnerHTML={{ __html: settings.attributes.text || '' }} />
+			<div dangerouslySetInnerHTML={{ __html: settings.attributes.text  || settings.attributes.markup || '' }} />
 		</WebformElementWrapper>
 	)
 }
