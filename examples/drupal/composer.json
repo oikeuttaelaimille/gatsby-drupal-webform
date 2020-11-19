@@ -18,14 +18,13 @@
     "require": {
         "php": ">=7.0.8",
         "composer/installers": "^1.2",
-        "drupal-composer/drupal-scaffold": "^2.5",
+        "drupal/core-composer-scaffold": "^8.7.0",
         "drupal/core": "^8.7.0",
         "drupal/react_webform_backend": "^1.0@beta",
         "drush/drush": "^9.0.0",
         "zaporylie/composer-drupal-optimizations": "^1.0"
     },
     "require-dev": {
-        "webflo/drupal-core-require-dev": "^8.7.0"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -66,6 +65,9 @@
             "drush/Commands/contrib/{$name}": ["type:drupal-drush"]
         },
         "drupal-scaffold": {
+            "locations": {
+                "web-root": "web/"
+            },
             "initial": {
                 ".editorconfig": "../.editorconfig",
                 ".gitattributes": "../.gitattributes"
