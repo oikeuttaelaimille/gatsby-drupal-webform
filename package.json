@@ -45,7 +45,7 @@
     "@testing-library/react": "^11.0.4",
     "@typescript-eslint/eslint-plugin": "^2.22.0",
     "@typescript-eslint/parser": "^2.22.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-jest": "^26.3.0",
     "babel-preset-gatsby": "^0.5.5",
     "commitizen": "^4.0.3",
