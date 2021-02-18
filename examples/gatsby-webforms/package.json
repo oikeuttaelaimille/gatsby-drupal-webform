@@ -19,8 +19,6 @@
   "scripts": {
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "test:e2e": "start-server-and-test develop http://localhost:8000 cy:open",
-    "test:e2e:ci": "start-server-and-test develop http://localhost:8000 cy:run",
     "build": "gatsby build",
     "develop": "gatsby develop",
     "start": "npm run develop",
@@ -34,7 +32,6 @@
     "url": "https://github.com/oikeuttaelaimille/gatsby-drupal-webform/issues"
   },
   "devDependencies": {
-    "cypress": "^3.8.2",
-    "start-server-and-test": "^1.10.6"
+    "cypress": "^3.8.2"
   }
 }

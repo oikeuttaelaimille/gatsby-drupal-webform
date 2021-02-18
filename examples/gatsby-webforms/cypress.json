@@ -1,5 +1,5 @@
 {
-	"baseUrl": "http://localhost:8000/",
+	"baseUrl": "http://localhost:9000/",
 	"env": {
 		"ENDPOINT": "http://localhost:8888/react_webform_backend/submit"
 	}
