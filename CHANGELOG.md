@@ -1,3 +1,10 @@
+## [2.6.4](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.6.3...v2.6.4) (2021-02-18)
+
+
+### Bug Fixes
+
+* relax axios version requirements ([186fed0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/186fed000e72fa5f35f3de717e9fda6643f710af))
+
 ## [2.6.3](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.6.2...v2.6.3) (2021-02-18)
 
 
