@@ -1,3 +1,10 @@
+## [2.6.3](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.6.2...v2.6.3) (2021-02-18)
+
+
+### Bug Fixes
+
+* trigger release ([cc23ee1](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/cc23ee16d64b1aec94e66198d80c9617c32d1e5c))
+
 ## [2.6.2](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.6.1...v2.6.2) (2020-09-16)
 
 
