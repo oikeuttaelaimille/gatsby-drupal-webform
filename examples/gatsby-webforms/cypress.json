@@ -1,5 +1,6 @@
 {
 	"baseUrl": "http://localhost:9000/",
+	"video": false,
 	"env": {
 		"ENDPOINT": "http://localhost:8888/react_webform_backend/submit"
 	}

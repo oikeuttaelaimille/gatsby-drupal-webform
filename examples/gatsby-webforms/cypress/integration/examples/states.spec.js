@@ -3,8 +3,7 @@
 context('Custom components', () => {
 	beforeEach(() => {
 		cy.visit('/states')
-		cy.server()
-			.route('POST', Cypress.env('ENDPOINT'))
+		cy.intercept(Cypress.env('ENDPOINT'))
 			.as('formSubmit')
 
 		cy.get('#webform').as('webform')

@@ -3,8 +3,7 @@
 context('Custom components', () => {
 	beforeEach(() => {
 		cy.visit('/custom_components')
-		cy.server()
-			.route('POST', Cypress.env('ENDPOINT'))
+		cy.intercept(Cypress.env('ENDPOINT'))
 			.as('formSubmit')
 	})
 
@@ -22,8 +21,8 @@ context('Custom components', () => {
 
 		// Wait for response.status to be 200
 		cy.wait('@formSubmit')
-			.its('status')
-			.should('be', 200)
+			.its('response.statusCode')
+			.should('equal', 200)
 
 		cy.get('#webform')
 			.next()

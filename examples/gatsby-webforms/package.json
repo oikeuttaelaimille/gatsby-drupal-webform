@@ -32,6 +32,6 @@
     "url": "https://github.com/oikeuttaelaimille/gatsby-drupal-webform/issues"
   },
   "devDependencies": {
-    "cypress": "^3.8.2"
+    "cypress": "^6.2.0"
   }
 }
