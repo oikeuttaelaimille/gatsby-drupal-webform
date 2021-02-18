@@ -7,19 +7,15 @@ context('Checkbox serialization', () => {
 	})
 
 	it('test serialization', () => {
-		cy.server()
-			.route('POST', Cypress.env('ENDPOINT'))
-			.as('formSubmit')
+		cy.intercept(Cypress.env('ENDPOINT')).as('formSubmit')
 
-		cy.get('@webform').submit()
+		cy.get('button').click()
 
 		// Wait for response.status to be 200
-		cy.wait('@formSubmit')
-			.its('status')
-			.should('be', 200)
+		cy.wait('@formSubmit', { timeout: 10000 }).its('response.statusCode').should('equal', 200)
 
 		cy.get('@formSubmit')
-			.its('requestBody') // alternative: its('request.body')
+			.its('request.body') // alternative: its('request.body')
 			.should('deep.equal', {
 				webform_id: 'checkboxes',
 				default_checked: '1'

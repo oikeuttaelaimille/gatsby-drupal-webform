@@ -43,7 +43,6 @@ jobs:
           name: Install drupal
           command: |
             cd examples/drupal
-            composer drupal-scaffold
             ./vendor/bin/drush site-install gatsby_webform_testing -y -vvv --db-url='mysql://root@127.0.0.1:3306/circle_test' --account-name='admin' --account-pass='admin'
 
       - run:
@@ -78,11 +77,19 @@ jobs:
           background: true
 
       - run: npm install --prefix examples/gatsby-webforms
+      - run: npm run build --prefix examples/gatsby-webforms
+      - run:
+          name: Run server
+          command: npm run serve --prefix examples/gatsby-webforms
+          background: true
+
       - run:
           name: Run E2E tests
-          command: npm run test:e2e:ci --prefix examples/gatsby-webforms
+          command: |
+              sleep 5
+              npm run cy:run --prefix examples/gatsby-webforms
 
-      - run: 
+      - run:
           name: Release
           command: npx semantic-release
 

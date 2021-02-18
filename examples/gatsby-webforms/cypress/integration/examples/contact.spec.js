@@ -3,9 +3,6 @@
 context('Contact form', () => {
 	beforeEach(() => {
 		cy.visit('/contact')
-		cy.server()
-			.route('POST', Cypress.env('ENDPOINT'))
-			.as('formSubmit')
 	})
 
 	it('submit a form', () => {
@@ -17,12 +14,14 @@ context('Contact form', () => {
 					.type(value)
 			})
 
+			cy.intercept(Cypress.env('ENDPOINT')).as('formSubmit')
+
 			cy.get('#webform').submit()
 
 			// Wait for response.status to be 200
 			cy.wait('@formSubmit')
-				.its('status')
-				.should('be', 200)
+				.its('response.statusCode')
+				.should('equal', 200)
 
 			cy.get('#webform')
 				.next()
