@@ -9,6 +9,7 @@ import {
 	WebformTextarea,
 	WebformCheckbox,
 	WebformCheckboxGroup,
+	WebformButton,
 	WebformText
 } from './components'
 
@@ -77,6 +78,17 @@ export class WebformError extends Error {
 	}
 }
 
+type CustomComponentLibrary = {
+	[name: string]: WebformCustomComponent
+} & {
+	/**
+	 * Button is special component type that accepts looser parameters.
+	 *
+	 * This is to make it compatible with existing button components.
+	 * */
+	button: React.ComponentType<any>
+}
+
 /**
  * Errors returned by Drupal.
  */
@@ -110,19 +122,25 @@ interface Props {
 	extraData?: object
 
 	/** Provide custom components that handle specific webform elements. */
-	customComponents: { [name: string]: WebformCustomComponent }
+	customComponents: CustomComponentLibrary
+}
+
+const DefaultComponents: CustomComponentLibrary = {
+	button: WebformButton
 }
 
 /**
  * Render single webform element.
  */
-export function renderWebformElement(element: WebformElement, error?: string, CustomComponent?: WebformCustomComponent) {
+export function renderWebformElement(customComponents: CustomComponentLibrary, element: WebformElement, error?: string) {
 	const customComponentAPI = {
 		error
 	}
 
-	// Render using custom compoennt if provided:
-	if (CustomComponent) {
+	// Render using custom component if provided:
+	if (customComponents[element.type]) {
+		const CustomComponent = customComponents[element.type]
+
 		return <CustomComponent element={element} {...customComponentAPI} />
 	}
 
@@ -154,7 +172,9 @@ export function renderWebformElement(element: WebformElement, error?: string, Cu
 		case 'webform_actions':
 			return (
 				<div className="form-group">
-					<button type="submit">{getAttributeValue('#submit__label', element) || DEFAULT_SUBMIT_LABEL}</button>
+					<customComponents.button type="submit">
+						{getAttributeValue('#submit__label', element) || DEFAULT_SUBMIT_LABEL}
+					</customComponents.button>
 				</div>
 			)
 		// Unknown element type -> render as json string
@@ -245,21 +265,23 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 	 *
 	 * Webform object should rarely change.
 	 */
-	const elements = useMemo(
-		() => [
-			...webform.elements.map((element) => (
-				<React.Fragment key={element.name}>
-					{renderWebformElement(element, errors[element.name], customComponents![element.type])}
-				</React.Fragment>
-			)),
+	const elements = useMemo(() => {
+		const components = { ...DefaultComponents, ...customComponents }
+		const ret = webform.elements.map((element) => (
+			<React.Fragment key={element.name}>{renderWebformElement(components, element, errors[element.name])}</React.Fragment>
+		))
 
-			/* Render default submit button if it is not defined in elements array. */
-			webform.elements.find((element) => element.type === 'webform_actions') === undefined && (
-				<button type="submit">{DEFAULT_SUBMIT_LABEL}</button>
+		// Render default submit button if it is not defined in elements array.
+		if (webform.elements.find((element) => element.type === 'webform_actions') === undefined) {
+			ret.push(
+				<components.button key="webform_actions__default_button" type="submit">
+					{DEFAULT_SUBMIT_LABEL}
+				</components.button>
 			)
-		],
-		[webform, customComponents, errors]
-	)
+		}
+
+		return ret
+	}, [webform, customComponents, errors])
 
 	return (
 		<form
