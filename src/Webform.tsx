@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react'
+import React, { useState, useMemo, FormEvent } from 'react'
 import axios from 'axios'
 
 import { getAttributeValue, formToJSON } from './utils'
@@ -240,6 +240,27 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 		}
 	}
 
+	/**
+	 * Build and memonize webform elements
+	 *
+	 * Webform object should rarely change.
+	 */
+	const elements = useMemo(
+		() => [
+			...webform.elements.map((element) => (
+				<React.Fragment key={element.name}>
+					{renderWebformElement(element, errors[element.name], customComponents![element.type])}
+				</React.Fragment>
+			)),
+
+			/* Render default submit button if it is not defined in elements array. */
+			webform.elements.find((element) => element.type === 'webform_actions') === undefined && (
+				<button type="submit">{DEFAULT_SUBMIT_LABEL}</button>
+			)
+		],
+		[webform, customComponents, errors]
+	)
+
 	return (
 		<form
 			onSubmit={submitHandler}
@@ -249,17 +270,7 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 			noValidate={props.noValidate}
 			data-webform-id={webform.drupal_internal__id}
 		>
-			{/* Render webform elements */}
-			{webform.elements.map((element) => (
-				<React.Fragment key={element.name}>
-					{renderWebformElement(element, errors[element.name], customComponents![element.type])}
-				</React.Fragment>
-			))}
-
-			{/* Render default submit button if it is not defined in elements array. */}
-			{webform.elements.find((element) => element.type === 'webform_actions') === undefined && (
-				<button type="submit">{DEFAULT_SUBMIT_LABEL}</button>
-			)}
+			{elements}
 		</form>
 	)
 }
