@@ -1,3 +1,28 @@
+# [3.0.0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.6.4...v3.0.0) (2021-02-23)
+
+
+### Bug Fixes
+
+* memonize webform elements array ([a6e28a2](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/a6e28a286ad3eb2a46e5a7638e7f01ca782fe504))
+* modify form callbacks to include request data ([5654bc0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/5654bc07167b445954c2e3be679cd52e213fa9ee))
+
+
+### Code Refactoring
+
+* remove gatsby peer dependency ([b9d0ab2](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/b9d0ab2d337134f18d7ce1bb3a80e40438324ab3)), closes [#8](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/issues/8)
+
+
+### Features
+
+* make form buttons easier to configure ([d9d3d4e](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/d9d3d4e4b99aec6c62506a949edba092b64b1a09))
+
+
+### BREAKING CHANGES
+
+* Removed SimpleWebform graphql fragment
+* Modified callback signature for WebformSubmitHandler, WebformSuccessHandler,
+WebformErrorHandler
+
 ## [2.6.4](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.6.3...v2.6.4) (2021-02-18)
 
 
