@@ -1,6 +1,5 @@
 import React, { useState, FormEvent } from 'react'
 import axios from 'axios'
-import { graphql } from 'gatsby'
 
 import { getAttributeValue, formToJSON } from './utils'
 import {
@@ -270,20 +269,3 @@ Webform.defaultProps = {
 }
 
 export default Webform
-
-/**
- * @deprecated I'm going to remove dependency to Gatsby in later versions.
- */
-export const query = graphql`
-	fragment SimpleWebform on webform__webform {
-		drupal_internal__id
-		elements {
-			name
-			type
-			attributes {
-				name
-				value
-			}
-		}
-	}
-`
