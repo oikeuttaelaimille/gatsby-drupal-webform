@@ -64,13 +64,9 @@ export type WebformCustomComponentProps = {
 export type WebformCustomComponent = React.FC<WebformCustomComponentProps>
 
 export type WebformValidateHandler = (event: FormEvent<HTMLFormElement>) => boolean
-export type WebformSubmitHandler = (
-	data: ReturnType<typeof formToJSON>,
-	event: FormEvent<HTMLFormElement>
-) => void | boolean | Promise<void | boolean>
-
-export type WebformSuccessHandler = (response: any, event: FormEvent<HTMLFormElement>) => void
-export type WebformErrorHandler = (err: any, event: FormEvent<HTMLFormElement>) => void
+export type WebformSubmitHandler = (data: ReturnType<typeof formToJSON>) => void | boolean | Promise<void | boolean>
+export type WebformSuccessHandler = (response: any, requestData: any) => void
+export type WebformErrorHandler = (err: any, requestData: any) => void
 
 export class WebformError extends Error {
 	response: any
@@ -206,7 +202,7 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 
 			try {
 				// If onSubmit returns false skip submitting to API.
-				if (props.onSubmit && (await props.onSubmit(data, event)) === false) {
+				if (props.onSubmit && (await props.onSubmit(data)) === false) {
 					target.classList.remove('form-submitting')
 					target.classList.add('form-submitted')
 					return
@@ -226,7 +222,7 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 				// Convey current form state.
 				target.classList.remove('form-submitting')
 				target.classList.add('form-submitted')
-				props.onSuccess && props.onSuccess(response.data, event)
+				props.onSuccess && props.onSuccess(response.data, data)
 			} catch (err) {
 				// API should return error structure if validation fails.
 				// We use that to render error messages to the form.
@@ -237,7 +233,7 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 				// Convey current form state.
 				target.classList.remove('form-submitting')
 				target.classList.add('form-error')
-				props.onError && props.onError(err, event)
+				props.onError && props.onError(err, data)
 			}
 		} else {
 			// Let css know this form was validated.
