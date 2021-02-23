@@ -1,6 +1,5 @@
-import React, { useState, FormEvent } from 'react'
+import React, { useState, useMemo, FormEvent } from 'react'
 import axios from 'axios'
-import { graphql } from 'gatsby'
 
 import { getAttributeValue, formToJSON } from './utils'
 import {
@@ -10,6 +9,7 @@ import {
 	WebformTextarea,
 	WebformCheckbox,
 	WebformCheckboxGroup,
+	WebformButton,
 	WebformText
 } from './components'
 
@@ -64,13 +64,9 @@ export type WebformCustomComponentProps = {
 export type WebformCustomComponent = React.FC<WebformCustomComponentProps>
 
 export type WebformValidateHandler = (event: FormEvent<HTMLFormElement>) => boolean
-export type WebformSubmitHandler = (
-	data: ReturnType<typeof formToJSON>,
-	event: FormEvent<HTMLFormElement>
-) => void | boolean | Promise<void | boolean>
-
-export type WebformSuccessHandler = (response: any, event: FormEvent<HTMLFormElement>) => void
-export type WebformErrorHandler = (err: any, event: FormEvent<HTMLFormElement>) => void
+export type WebformSubmitHandler = (data: ReturnType<typeof formToJSON>) => void | boolean | Promise<void | boolean>
+export type WebformSuccessHandler = (response: any, requestData: any) => void
+export type WebformErrorHandler = (err: any, requestData: any) => void
 
 export class WebformError extends Error {
 	response: any
@@ -80,6 +76,17 @@ export class WebformError extends Error {
 
 		this.response = response
 	}
+}
+
+type CustomComponentLibrary = {
+	[name: string]: WebformCustomComponent
+} & {
+	/**
+	 * Button is special component type that accepts looser parameters.
+	 *
+	 * This is to make it compatible with existing button components.
+	 * */
+	button: React.ComponentType<any>
 }
 
 /**
@@ -115,19 +122,25 @@ interface Props {
 	extraData?: object
 
 	/** Provide custom components that handle specific webform elements. */
-	customComponents: { [name: string]: WebformCustomComponent }
+	customComponents: CustomComponentLibrary
+}
+
+const DefaultComponents: CustomComponentLibrary = {
+	button: WebformButton
 }
 
 /**
  * Render single webform element.
  */
-export function renderWebformElement(element: WebformElement, error?: string, CustomComponent?: WebformCustomComponent) {
+export function renderWebformElement(customComponents: CustomComponentLibrary, element: WebformElement, error?: string) {
 	const customComponentAPI = {
 		error
 	}
 
-	// Render using custom compoennt if provided:
-	if (CustomComponent) {
+	// Render using custom component if provided:
+	if (customComponents[element.type]) {
+		const CustomComponent = customComponents[element.type]
+
 		return <CustomComponent element={element} {...customComponentAPI} />
 	}
 
@@ -159,7 +172,9 @@ export function renderWebformElement(element: WebformElement, error?: string, Cu
 		case 'webform_actions':
 			return (
 				<div className="form-group">
-					<button type="submit">{getAttributeValue('#submit__label', element) || DEFAULT_SUBMIT_LABEL}</button>
+					<customComponents.button type="submit">
+						{getAttributeValue('#submit__label', element) || DEFAULT_SUBMIT_LABEL}
+					</customComponents.button>
 				</div>
 			)
 		// Unknown element type -> render as json string
@@ -206,7 +221,7 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 
 			try {
 				// If onSubmit returns false skip submitting to API.
-				if (props.onSubmit && (await props.onSubmit(data, event)) === false) {
+				if (props.onSubmit && (await props.onSubmit(data)) === false) {
 					target.classList.remove('form-submitting')
 					target.classList.add('form-submitted')
 					return
@@ -226,7 +241,7 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 				// Convey current form state.
 				target.classList.remove('form-submitting')
 				target.classList.add('form-submitted')
-				props.onSuccess && props.onSuccess(response.data, event)
+				props.onSuccess && props.onSuccess(response.data, data)
 			} catch (err) {
 				// API should return error structure if validation fails.
 				// We use that to render error messages to the form.
@@ -237,13 +252,36 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 				// Convey current form state.
 				target.classList.remove('form-submitting')
 				target.classList.add('form-error')
-				props.onError && props.onError(err, event)
+				props.onError && props.onError(err, data)
 			}
 		} else {
 			// Let css know this form was validated.
 			target.classList.add('was-validated', 'form-error')
 		}
 	}
+
+	/**
+	 * Build and memonize webform elements
+	 *
+	 * Webform object should rarely change.
+	 */
+	const elements = useMemo(() => {
+		const components = { ...DefaultComponents, ...customComponents }
+		const ret = webform.elements.map((element) => (
+			<React.Fragment key={element.name}>{renderWebformElement(components, element, errors[element.name])}</React.Fragment>
+		))
+
+		// Render default submit button if it is not defined in elements array.
+		if (webform.elements.find((element) => element.type === 'webform_actions') === undefined) {
+			ret.push(
+				<components.button key="webform_actions__default_button" type="submit">
+					{DEFAULT_SUBMIT_LABEL}
+				</components.button>
+			)
+		}
+
+		return ret
+	}, [webform, customComponents, errors])
 
 	return (
 		<form
@@ -254,17 +292,7 @@ const Webform = ({ webform, customComponents, ...props }: Props) => {
 			noValidate={props.noValidate}
 			data-webform-id={webform.drupal_internal__id}
 		>
-			{/* Render webform elements */}
-			{webform.elements.map((element) => (
-				<React.Fragment key={element.name}>
-					{renderWebformElement(element, errors[element.name], customComponents![element.type])}
-				</React.Fragment>
-			))}
-
-			{/* Render default submit button if it is not defined in elements array. */}
-			{webform.elements.find((element) => element.type === 'webform_actions') === undefined && (
-				<button type="submit">{DEFAULT_SUBMIT_LABEL}</button>
-			)}
+			{elements}
 		</form>
 	)
 }
@@ -274,20 +302,3 @@ Webform.defaultProps = {
 }
 
 export default Webform
-
-/**
- * @deprecated I'm going to remove dependency to Gatsby in later versions.
- */
-export const query = graphql`
-	fragment SimpleWebform on webform__webform {
-		drupal_internal__id
-		elements {
-			name
-			type
-			attributes {
-				name
-				value
-			}
-		}
-	}
-`

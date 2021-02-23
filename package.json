@@ -33,12 +33,11 @@
   },
   "homepage": "https://github.com/oikeuttaelaimille/gatsby-drupal-webform#readme",
   "peerDependencies": {
-    "gatsby": "^2.0.0",
     "axios": ">= 0.19.0"
   },
   "dependencies": {},
   "devDependencies": {
-    "@commitlint/cli": "^8.3.5",
+    "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^8.3.4",
     "@semantic-release/changelog": "^5.0.0",
     "@semantic-release/git": "^9.0.0",
