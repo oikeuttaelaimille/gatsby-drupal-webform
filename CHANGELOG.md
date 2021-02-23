@@ -1,3 +1,20 @@
+# [4.0.0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v3.0.0...v4.0.0) (2021-02-23)
+
+
+### Bug Fixes
+
+* fix typescript errors when trying to use customComponents ([c98ff68](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/c98ff68b9c2826e6e4f7f91f1821a21d2a0d8707))
+
+
+### Features
+
+* export event handler types ([39fb6b0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/commit/39fb6b0e9a9bcc7d3bd291dfdbdbdf8f7b83ff57)), closes [#98](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/issues/98)
+
+
+### BREAKING CHANGES
+
+* Modify Webform component props
+
 # [3.0.0](https://github.com/oikeuttaelaimille/gatsby-drupal-webform/compare/v2.6.4...v3.0.0) (2021-02-23)
 
 
