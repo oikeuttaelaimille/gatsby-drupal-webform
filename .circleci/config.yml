@@ -62,14 +62,12 @@ jobs:
       - run:
           name: Run NPM tests
           command: |
+            mkdir ~/.npm-global
+            npm config set prefix '~/.npm-global'
+
             npm run build
             npm run test
-
-      - run:
-          name: Package library
-          command: |
-            npm pack
-            mv ./$(jq -r '.name + "-" + .version + ".tgz"' package.json) ./gatsby-drupal-webform.tgz
+            npm link
 
       - run:
           name: Execute Chrome in Background
@@ -77,6 +75,12 @@ jobs:
           background: true
 
       - run: npm install --prefix examples/gatsby-webforms
+      - run:
+          name: Link gatsby-drupal-webform
+          command: |
+            cd examples/gatsby-webforms
+            npm link gatsby-drupal-webform
+
       - run: npm run build --prefix examples/gatsby-webforms
       - run:
           name: Run server
@@ -86,8 +90,8 @@ jobs:
       - run:
           name: Run E2E tests
           command: |
-              sleep 5
-              npm run cy:run --prefix examples/gatsby-webforms
+            sleep 5
+            npm run cy:run --prefix examples/gatsby-webforms
 
       - run:
           name: Release
@@ -110,7 +114,7 @@ commands:
       working-dir:
         type: string
         default: .
-    description: "Install composer dependencies"
+    description: 'Install composer dependencies'
     steps:
       # special step to restore the dependency cache if `composer.lock` does not change
       # fallback to using the latest cache if no exact match is found (See https://circleci.com/docs/2.0/caching/)
@@ -135,7 +139,7 @@ commands:
     parameters:
       only:
         type: string
-        default: ""
+        default: ''
       prefix:
         type: string
         default: .
